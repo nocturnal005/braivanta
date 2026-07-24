@@ -312,8 +312,14 @@ function calculateLeadScore(item) {
   return { score, status };
 }
 
+// --- Admin Security & Access Control State ---
+let isAdminUnlocked = false;
+let pendingAdminTab = null;
+const ADMIN_PASSCODE = "braivanta2026";
+
 // --- App Setup & Event Listeners ---
 document.addEventListener("DOMContentLoaded", () => {
+  checkUrlAdminParam();
   initTabs();
   initEmailCopySelector();
   renderDashboardMetrics();
@@ -322,16 +328,96 @@ document.addEventListener("DOMContentLoaded", () => {
   renderRawDataTable();
 });
 
+// Auto unlock if URL contains ?admin=true or ?mode=admin
+function checkUrlAdminParam() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("admin") === "true" || urlParams.get("mode") === "admin") {
+    unlockAdminAccess();
+  }
+}
+
+function checkAdminAccess(tabId, event) {
+  if (!isAdminUnlocked) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    pendingAdminTab = tabId;
+    openAdminAuthModal();
+    return false;
+  }
+  return true;
+}
+
+function openAdminAuthModal(targetTab) {
+  if (targetTab) pendingAdminTab = targetTab;
+  const modal = document.getElementById("admin-auth-modal");
+  const input = document.getElementById("admin-passcode-input");
+  const err = document.getElementById("passcode-error");
+  if (err) err.style.display = "none";
+  if (input) input.value = "";
+  if (modal) modal.classList.add("active");
+  setTimeout(() => input && input.focus(), 150);
+}
+
+function closeAdminAuthModal() {
+  const modal = document.getElementById("admin-auth-modal");
+  if (modal) modal.classList.remove("active");
+}
+
+function handlePasscodeKeyUp(event) {
+  if (event.key === "Enter") {
+    submitAdminPasscode();
+  }
+}
+
+function submitAdminPasscode() {
+  const input = document.getElementById("admin-passcode-input");
+  const val = input ? input.value.trim() : "";
+  const err = document.getElementById("passcode-error");
+
+  if (val === ADMIN_PASSCODE) {
+    unlockAdminAccess();
+    closeAdminAuthModal();
+    if (pendingAdminTab) {
+      const btn = document.querySelector(`[data-tab="${pendingAdminTab}"]`);
+      if (btn) btn.click();
+      pendingAdminTab = null;
+    }
+  } else {
+    if (err) err.style.display = "block";
+  }
+}
+
+function unlockAdminAccess() {
+  isAdminUnlocked = true;
+  const btn = document.getElementById("admin-auth-btn");
+  if (btn) {
+    btn.innerHTML = "🔓 Admin Active";
+    btn.classList.remove("btn-teal");
+    btn.classList.add("btn-primary");
+  }
+  document.querySelectorAll(".admin-tab .lock-icon").forEach(icon => {
+    icon.textContent = "";
+  });
+}
+
 // --- Tab Switching Logic ---
 function initTabs() {
   const navBtns = document.querySelectorAll(".nav-btn");
   navBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      const tabId = btn.getAttribute("data-tab");
+
+      if (btn.classList.contains("admin-tab") && !isAdminUnlocked) {
+        checkAdminAccess(tabId, e);
+        return;
+      }
+
       navBtns.forEach(b => b.classList.remove("active"));
       document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
       
       btn.classList.add("active");
-      const tabId = btn.getAttribute("data-tab");
       document.getElementById(tabId).classList.add("active");
 
       if (tabId === "dashboard-tab") {

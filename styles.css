@@ -825,8 +825,12 @@ body {
   margin-top: 0.3rem;
 }
 
-.modal-body h4 {
-  font-family: var(--font-heading);
-  font-size: 0.98rem;
-  color: var(--primary-navy);
+.lock-icon {
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+  opacity: 0.8;
+}
+
+.modal-sm {
+  max-width: 440px !important;
 }

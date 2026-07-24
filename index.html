@@ -30,6 +30,7 @@
         <span>AI drafts. Humans verify.</span>
       </div>
       <button class="btn btn-sm btn-secondary no-print" onclick="openPrivacyModal()">🛡️ Data Protection & Privacy</button>
+      <button id="admin-auth-btn" class="btn btn-sm btn-teal no-print" onclick="openAdminAuthModal()">🔒 Team Login</button>
     </div>
 
     <!-- Navigation Tabs -->
@@ -37,9 +38,9 @@
       <button class="nav-btn active" data-tab="email-tab">✉️ Invitation Email</button>
       <button class="nav-btn" data-tab="review-page-tab">📄 Demo Review Sheet</button>
       <button class="nav-btn" data-tab="form-tab">📝 Feedback Form</button>
-      <button class="nav-btn" data-tab="dashboard-tab">📊 Analytics Dashboard</button>
-      <button class="nav-btn" data-tab="setup-tab">⚙️ Google/MS Setup & Formulas</button>
-      <button class="nav-btn" data-tab="export-tab">📁 Data & Evidence Export</button>
+      <button class="nav-btn admin-tab" data-tab="dashboard-tab" onclick="checkAdminAccess('dashboard-tab', event)">📊 Analytics Dashboard <span class="lock-icon">🔒</span></button>
+      <button class="nav-btn admin-tab" data-tab="setup-tab" onclick="checkAdminAccess('setup-tab', event)">⚙️ Google/MS Setup <span class="lock-icon">🔒</span></button>
+      <button class="nav-btn admin-tab" data-tab="export-tab" onclick="checkAdminAccess('export-tab', event)">📁 Data & Evidence Export <span class="lock-icon">🔒</span></button>
     </nav>
   </header>
 
@@ -728,6 +729,30 @@
         <div class="margin-top flex-between">
           <span class="subtext">Contact DPO Lead: <strong>braivanta@gmail.com</strong></span>
           <button class="btn btn-primary btn-sm" onclick="closePrivacyModal()">Close Notice</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN AUTHENTICATION MODAL ==================== -->
+  <div id="admin-auth-modal" class="modal-overlay">
+    <div class="modal-card modal-sm">
+      <div class="modal-header flex-between">
+        <h3 class="text-teal">🔒 Braivanta Team Login</h3>
+        <button class="modal-close" onclick="closeAdminAuthModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Please enter your internal Braivanta team passcode to unlock the Analytics Dashboard, Setup Formulas, and CSV Evidence Export.</p>
+        
+        <div class="form-group margin-top">
+          <label for="admin-passcode-input">Team Passcode:</label>
+          <input type="password" id="admin-passcode-input" class="form-input" placeholder="Enter team passcode" onkeyup="handlePasscodeKeyUp(event)">
+          <span id="passcode-error" class="text-red subtext" style="display:none; margin-top:0.4rem;">Incorrect passcode. Default passcode is: braivanta2026</span>
+        </div>
+
+        <div class="margin-top flex-between">
+          <span class="subtext">Default Passcode: <code>braivanta2026</code></span>
+          <button class="btn btn-primary" onclick="submitAdminPasscode()">Unlock Dashboard</button>
         </div>
       </div>
     </div>
