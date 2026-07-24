@@ -29,6 +29,7 @@
         <span class="pulse-dot"></span>
         <span>AI drafts. Humans verify.</span>
       </div>
+      <button class="btn btn-sm btn-secondary no-print" onclick="openPrivacyModal()">🛡️ Data Protection & Privacy</button>
     </div>
 
     <!-- Navigation Tabs -->
@@ -697,7 +698,40 @@
 
   <footer class="app-footer no-print">
     <p>Braivanta Validation Engine | Designed for Human-Verified VI Education Workflows | Confidential</p>
+    <button class="btn-link" onclick="openPrivacyModal()">Data Protection & Privacy Policy</button>
   </footer>
+
+  <!-- ==================== DATA PROTECTION & PRIVACY MODAL ==================== -->
+  <div id="privacy-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header flex-between">
+        <h3 class="text-teal">🛡️ Braivanta Data Protection, Security & Privacy Notice</h3>
+        <button class="modal-close" onclick="closePrivacyModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="disclaimer-box margin-bottom">
+          <p><strong>Strict Principle:</strong> <em>"AI drafts. Humans verify."</em> Braivanta is built from the ground up to support Qualified Teachers of Visually Impaired (QTVIs), SENCOs, and education professionals while respecting UK data protection standards.</p>
+        </div>
+
+        <h4 class="margin-top">1. Demo Testing Data Safety Policy</h4>
+        <p>During demo testing, we explicitly request that <strong>no real pupil names, confidential school documents, live assessment materials, or personally identifiable information (PII)</strong> are uploaded. Demo testing is strictly for product feedback and feature validation.</p>
+
+        <h4 class="margin-top">2. How Professional Feedback Data is Used</h4>
+        <p>Information collected via the feedback form (job title, organisation, professional feedback, and contact email) is used <strong>exclusively to evaluate pilot suitability, refine features, and communicate with you about Braivanta updates</strong>. We do not sell data, share it with third parties, or use it for advertising.</p>
+
+        <h4 class="margin-top">3. Zero AI Training Guarantee</h4>
+        <p>Pupil work and descriptions processed by Braivanta are handled under strict zero-retention processing agreements. Customer data is <strong>never used to train base AI models</strong>.</p>
+
+        <h4 class="margin-top">4. UK GDPR & DfE Cloud Compliance (For IT / DPOs)</h4>
+        <p>The production Braivanta platform is designed in accordance with <strong>UK GDPR, the Data Protection Act 2018, and DfE Cloud Security Guidelines</strong>. Data is encrypted in transit (TLS 1.3) and at rest (AES-256) in UK-based data centers. Standard Data Protection Impact Assessments (DPIA) and Data Processing Agreements (DPA) are provided prior to school or local authority pilot onboarding.</p>
+
+        <div class="margin-top flex-between">
+          <span class="subtext">Contact DPO Lead: <strong>braivanta@gmail.com</strong></span>
+          <button class="btn btn-primary btn-sm" onclick="closePrivacyModal()">Close Notice</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

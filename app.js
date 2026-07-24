@@ -722,3 +722,14 @@ function exportDataToCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
+// --- Data Protection Modal Triggers ---
+function openPrivacyModal() {
+  const modal = document.getElementById("privacy-modal");
+  if (modal) modal.classList.add("active");
+}
+
+function closePrivacyModal() {
+  const modal = document.getElementById("privacy-modal");
+  if (modal) modal.classList.remove("active");
+}
