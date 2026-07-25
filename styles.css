@@ -291,24 +291,7 @@ body {
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 
-.role-selector-box {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
 
-/* Email Template Container */
-.email-preview-container {
-  background: #F1F5F9;
-  border: 1px solid #CBD5E1;
-  border-radius: var(--radius-md);
-  padding: 1.75rem;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #1E293B;
-  white-space: pre-line;
-}
 
 /* Deliverable 2: Printable One-Page Review Sheet */
 .print-actions-bar {
@@ -625,19 +608,7 @@ body {
 .text-teal { color: var(--primary-teal) !important; }
 .text-red { color: var(--accent-red) !important; }
 
-.bp-summary-card {
-  border-top: 4px solid var(--primary-teal);
-}
 
-.bp-text-box {
-  background: #F8FAFC;
-  border: 1px solid #CBD5E1;
-  border-radius: var(--radius-sm);
-  padding: 1.25rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #1E293B;
-}
 
 .notice-tag {
   display: inline-block;
@@ -706,23 +677,7 @@ body {
 .badge-cold { background: #E0F2FE; color: #075985; }
 .badge-info { background: #E0E7FF; color: #3730A3; }
 
-/* Setup Code Snippets */
-.setup-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
 
-.code-snippet {
-  background: var(--primary-navy);
-  color: #38BDF8;
-  padding: 1.25rem;
-  border-radius: var(--radius-md);
-  font-family: monospace;
-  font-size: 0.85rem;
-  overflow-x: auto;
-  margin-top: 0.5rem;
-}
 
 /* Print Stylesheet for Deliverable 2 */
 @media print {

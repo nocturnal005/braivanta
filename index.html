@@ -31,49 +31,17 @@
 
     <!-- Navigation Tabs -->
     <nav class="nav-tabs">
-      <button class="nav-btn active" data-tab="email-tab">✉️ Invitation Email</button>
-      <button class="nav-btn" data-tab="review-page-tab">📄 Demo Review Sheet</button>
+      <button class="nav-btn active" data-tab="review-page-tab">📄 Demo Review Sheet</button>
       <button class="nav-btn" data-tab="form-tab">📝 Feedback Form</button>
       <button class="nav-btn admin-tab" data-tab="dashboard-tab" onclick="checkAdminAccess('dashboard-tab', event)">📊 Analytics Dashboard <span class="lock-icon">🔒</span></button>
-      <button class="nav-btn admin-tab" data-tab="setup-tab" onclick="checkAdminAccess('setup-tab', event)">⚙️ Google/MS Setup <span class="lock-icon">🔒</span></button>
       <button class="nav-btn admin-tab" data-tab="export-tab" onclick="checkAdminAccess('export-tab', event)">📁 Data & Evidence Export <span class="lock-icon">🔒</span></button>
     </nav>
   </header>
 
   <main class="main-content">
 
-    <!-- ==================== TAB 1: INVITATION EMAIL ==================== -->
-    <section id="email-tab" class="tab-content active">
-      <div class="card shadow-sm">
-        <div class="card-header border-bottom flex-between">
-          <div>
-            <h2>Deliverable 1: Stakeholder Invitation Email</h2>
-            <p class="subtext">Customizable invitation template for QTVIs, SENCOs, TAs, School Leaders, and LA Officers.</p>
-          </div>
-          <div class="role-selector-box">
-            <label for="role-select">Target Recipient Role:</label>
-            <select id="role-select" class="form-select">
-              <option value="QTVI">QTVI (Qualified Teacher of VI)</option>
-              <option value="SENCO">SENCO / SEN Department Lead</option>
-              <option value="Teaching Assistant">Teaching Assistant / VI Specialist</option>
-              <option value="School Leader">Headteacher / School Leader</option>
-              <option value="MAT Lead">Multi-Academy Trust Inclusion Lead</option>
-              <option value="LA Officer">Local Authority VI Service Lead</option>
-              <option value="IT Lead">IT / Data Protection Lead</option>
-            </select>
-            <button class="btn btn-primary btn-sm" onclick="copyEmailCopy()">📋 Copy Email Copy</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="email-preview-container" id="email-body-text">
-            <!-- Dynamic Email Copy inserted via JS -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TAB 2: DEMO REVIEW SHEET ==================== -->
-    <section id="review-page-tab" class="tab-content">
+    <!-- ==================== TAB 1: DEMO REVIEW SHEET ==================== -->
+    <section id="review-page-tab" class="tab-content active">
       <div class="no-print print-actions-bar">
         <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Save as PDF One-Pager</button>
         <span class="badge badge-info">PDF / One-Page Layout Mode Enabled</span>
@@ -149,7 +117,7 @@
             <button class="sheet-btn btn-teal" onclick="switchToFormTab()">📝 Complete Feedback Form</button>
           </div>
           <div class="sheet-contact">
-            <span>Contact: <strong>braivanta@gmail.com</strong></span>
+            <span>Contact: <strong>braivanta@gmail.com</strong> | <strong>+44 7423 511396</strong></span>
           </div>
         </footer>
       </div>
@@ -507,23 +475,6 @@
         </div>
       </div>
 
-      <!-- Business Plan Evidence Summary Generator Card -->
-      <div class="card shadow-sm margin-top bp-summary-card">
-        <div class="card-header flex-between border-bottom">
-          <div>
-            <h3>📜 Automated Business Plan Evidence Text Generator</h3>
-            <p class="subtext">Dynamic summary text ready to copy into Innovator Founder visa plans, pitch decks, and grant applications.</p>
-          </div>
-          <button class="btn btn-sm btn-teal" onclick="copyBusinessPlanText()">📋 Copy Business Plan Paragraph</button>
-        </div>
-        <div class="card-body">
-          <div class="bp-text-box" id="bp-generated-text">
-            <!-- Dynamic generated text -->
-          </div>
-          <span class="notice-tag margin-top">⚠️ Note: Always marked as early validation evidence, not binding proven market demand.</span>
-        </div>
-      </div>
-
       <!-- Charts Grid -->
       <div class="charts-grid margin-top">
         <div class="chart-card card shadow-sm">
@@ -599,60 +550,7 @@
 
     </section>
 
-    <!-- ==================== TAB 5: GOOGLE/MS SETUP & FORMULAS ==================== -->
-    <section id="setup-tab" class="tab-content">
-      <div class="card shadow-sm">
-        <div class="card-header border-bottom">
-          <h2>Deliverable 5: Recommended Implementation Option & Formulas</h2>
-          <p class="subtext">Fastest implementation route using Google Forms + Sheets + Looker Studio (and Microsoft Forms alternative).</p>
-        </div>
-        <div class="card-body">
-          <div class="setup-grid">
-            <div class="setup-col border-box">
-              <h3 class="text-teal">Option A: Google Stack (Recommended)</h3>
-              <ol class="setup-steps-list">
-                <li><strong>1. Create Google Form:</strong> Set up the 23 questions from Deliverable 3.</li>
-                <li><strong>2. Connect Google Sheet:</strong> Direct responses to <code>Form Responses 1</code>.</li>
-                <li><strong>3. Add Cleaned Data Tab:</strong> Apply formulas below for lead scoring & tags.</li>
-                <li><strong>4. Connect Looker Studio:</strong> Build executive dashboard using Google Sheet as data source.</li>
-              </ol>
-            </div>
 
-            <div class="setup-col border-box">
-              <h3>Option B: Microsoft Stack</h3>
-              <ol class="setup-steps-list">
-                <li><strong>1. Create MS Form:</strong> Mirror questions in Microsoft Forms.</li>
-                <li><strong>2. Connect Excel:</strong> Stream results directly into Excel Online table.</li>
-                <li><strong>3. Power BI Dashboard:</strong> Import Excel table into Power BI desktop for interactive visualization.</li>
-              </ol>
-            </div>
-          </div>
-
-          <div class="margin-top">
-            <h3>Google Sheets Lead Scoring Formula Code</h3>
-            <p class="subtext">Paste this into Column AA of your <code>Cleaned Data</code> sheet to calculate lead score automatically:</p>
-            <pre class="code-snippet">
-=IF(ISBLANK(A2), "", 
-  IF(J2>=4, 2, 0) + 
-  IF(OR(R2="Very interested", R2="Strongly interested"), 2, 0) + 
-  IF(ISNUMBER(SEARCH("consider a controlled pilot", S2)), 1, 0) + 
-  IF(ISNUMBER(SEARCH("consider a paid pilot", S2)), 2, 0) + 
-  IF(OR(T2="Yes", ISNUMBER(SEARCH("Possibly", T2))), 2, 0) + 
-  IF(OR(U2="£300 per month", U2="£400 per month", U2="More than £400 per month"), 2, 0) + 
-  IF(ISNUMBER(SEARCH("Yes", W2)), 2, 0) + 
-  IF(X2="Yes", 1, 0) + 
-  IF(NOT(ISBLANK(Y2)), 1, 0)
-)</pre>
-          </div>
-
-          <div class="margin-top">
-            <h3>Lead Status Categorization Formula</h3>
-            <pre class="code-snippet">
-=IF(AA2="", "", IF(AA2>=8, "Hot", IF(AA2>=4, "Warm", "Cold")))</pre>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ==================== TAB 6: DATA & EVIDENCE EXPORT ==================== -->
     <section id="export-tab" class="tab-content">
@@ -738,7 +636,7 @@
         <button class="modal-close" onclick="closeAdminAuthModal()">✕</button>
       </div>
       <div class="modal-body">
-        <p>Please enter your internal Braivanta team passcode to unlock the Analytics Dashboard, Setup Formulas, and CSV Evidence Export.</p>
+        <p>Please enter your internal Braivanta team passcode to unlock the Analytics Dashboard and CSV Evidence Export.</p>
         
         <div class="form-group margin-top">
           <label for="admin-passcode-input">Team Passcode:</label>

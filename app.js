@@ -156,121 +156,7 @@ let sampleResponses = [
   }
 ];
 
-// --- Email Templates Dictionary ---
-const emailTemplates = {
-  "QTVI": `Subject: Invitation to Review Braivanta Demo: Human-Verified VI Workflows for Schools & VI Services (10–15 mins)
 
-Dear QTVI Colleague,
-
-I hope this email finds you well.
-
-I am reaching out to invite you to review the early demo of Braivanta (formerly InsightEd AI), a secure, human-verified accessibility workflow platform designed specifically for Qualified Teachers of Visually Impaired (QTVIs) and specialist support teams.
-
-Why You Are Invited:
-As a lead QTVI practitioner, your expertise in Braille accuracy, tactile diagram adaptation, and specialist verification is essential to ensuring Braivanta solves real classroom bottlenecks safely.
-
-Core Principle: "AI drafts. Humans verify."
-Braivanta uses AI to prepare initial English drafts of Braille work and accessible descriptions of STEM materials, but final decisions remain strictly with authorised QTVIs and teachers. Braivanta supports your professional judgement; it never replaces it.
-
-What We Ask You to Do (10–15 Minutes):
-1. Explore the Demo: https://insighted-ai-mvp.vercel.app/login
-2. Review the 5 Core Features: Braille Work Review, Assessment-Safe, STEM Support, Pupil Records, and Approvals.
-3. Complete Feedback Form: Share your rating on usefulness, pilot suitability, and pricing: [INSERT FEEDBACK FORM LINK]
-
-⚠️ Safety Notice: Please do NOT upload real pupil data, confidential documents, or personally identifiable information during demo testing.
-
-Thank you for your valuable guidance in shaping accessible tools for VI pupils!
-
-Warm regards,
-The Braivanta Team | braivanta@gmail.com`,
-
-  "SENCO": `Subject: Invitation to Review Braivanta Demo: Streamlined VI Workflows & Audit Trails (10–15 mins)
-
-Dear SENCO / SEN Lead,
-
-I am writing to invite you to test the demo of Braivanta, a secure, human-verified accessibility workflow platform built for SEN departments and schools supporting visually impaired learners.
-
-Why You Are Invited:
-As a SENCO, you manage pupil records, EHCP evidence, and accessibility support across subjects. Braivanta provides central Pupil Records and clear Approvals audit trails showing who reviewed and verified work.
-
-Core Principle: "AI drafts. Humans verify."
-AI assists with drafting Braille work reviews and STEM descriptions, but final authority rests entirely with QTVIs and SEN staff.
-
-Time Required: 10 to 15 minutes.
-- Demo Link: https://insighted-ai-mvp.vercel.app/login
-- Feedback Form Link: [INSERT FEEDBACK FORM LINK]
-
-⚠️ Safety Notice: Do not upload real pupil data or confidential school files during testing.
-
-Best regards,
-The Braivanta Team | braivanta@gmail.com`,
-
-  "Teaching Assistant": `Subject: Invitation to Review Braivanta Demo: Faster Braille & STEM Adaptation Support (10–15 mins)
-
-Dear Colleague,
-
-We would love your feedback on the demo of Braivanta, a tool built to help TAs and specialists support visually impaired pupils with Braille work review, STEM materials, and teacher feedback.
-
-AI prepares drafts so you can save time, while QTVIs and teachers verify the final outputs.
-
-Please take 10 minutes to test the demo:
-- Demo Link: https://insighted-ai-mvp.vercel.app/login
-- Feedback Form: [INSERT FEEDBACK FORM LINK]
-
-⚠️ Notice: Please do not upload real pupil names or work.
-
-Thank you!
-The Braivanta Team | braivanta@gmail.com`,
-
-  "School Leader": `Subject: Braivanta Demo Review: Efficient, Compliant VI Accessibility Workflows for Schools (10-15 mins)
-
-Dear Headteacher / School Leader,
-
-We invite you to review the demo of Braivanta, a human-verified accessibility platform designed to reduce QTVI/TA workload while creating robust audit trails for SEND compliance.
-
-Explore the 10-minute demo and complete our short feedback form on pilot interest and pricing:
-- Demo: https://insighted-ai-mvp.vercel.app/login
-- Form: [INSERT FEEDBACK FORM LINK]
-
-Warm regards,
-The Braivanta Team | braivanta@gmail.com`,
-
-  "MAT Lead": `Subject: Braivanta Demo Review: Trust-Wide VI Accessibility & Approval Audit Trails (10-15 mins)
-
-Dear MAT Inclusion Lead,
-
-We invite you to evaluate Braivanta across multi-school settings. Braivanta standardizes Braille review, STEM descriptions, and approval records across your academy trust.
-
-Review Demo (10-15 mins): https://insighted-ai-mvp.vercel.app/login
-Provide Feedback: [INSERT FEEDBACK FORM LINK]
-
-Regards,
-The Braivanta Team | braivanta@gmail.com`,
-
-  "LA Officer": `Subject: Invitation to Review Braivanta Demo: LA Sensory Service Verification Platform (10-15 mins)
-
-Dear Local Authority VI Lead,
-
-We invite your sensory service team to test Braivanta. It provides a secure, centralized workflow for QTVIs visiting multiple schools to verify Braille work and manage pupil records efficiently.
-
-Demo Link: https://insighted-ai-mvp.vercel.app/login
-Feedback Form: [INSERT FEEDBACK FORM LINK]
-
-Best regards,
-The Braivanta Team | braivanta@gmail.com`,
-
-  "IT Lead": `Subject: Braivanta Demo Review: Security, DPIA & Human Verification Controls (10-15 mins)
-
-Dear IT & Data Protection Manager,
-
-We invite you to review the security architecture and approval controls of Braivanta. Built with strict "AI drafts. Humans verify." principles, human staff maintain 100% control over all published outputs.
-
-Demo: https://insighted-ai-mvp.vercel.app/login
-Feedback Form: [INSERT FEEDBACK FORM LINK]
-
-Regards,
-The Braivanta Team | braivanta@gmail.com`
-};
 
 // --- Chart Instances ---
 let chartInstances = {};
@@ -321,7 +207,6 @@ const ADMIN_PASSCODE = "braivanta2026";
 document.addEventListener("DOMContentLoaded", () => {
   checkUrlAdminParam();
   initTabs();
-  initEmailCopySelector();
   renderDashboardMetrics();
   renderCharts();
   renderThemeQuotes();
@@ -436,26 +321,7 @@ function switchToFormTab() {
   document.getElementById("form-tab").classList.add("active");
 }
 
-// --- Email Copy Selector ---
-function initEmailCopySelector() {
-  const roleSelect = document.getElementById("role-select");
-  const emailBox = document.getElementById("email-body-text");
 
-  function updateEmail() {
-    const role = roleSelect.value;
-    emailBox.textContent = emailTemplates[role] || emailTemplates["QTVI"];
-  }
-
-  roleSelect.addEventListener("change", updateEmail);
-  updateEmail();
-}
-
-function copyEmailCopy() {
-  const emailText = document.getElementById("email-body-text").textContent;
-  navigator.clipboard.writeText(emailText).then(() => {
-    alert("Email copy copied to clipboard!");
-  });
-}
 
 // --- Form Submit Handler ---
 function handleFormSubmit(e) {
@@ -517,7 +383,7 @@ function resetDemoForm() {
   document.getElementById("feedback-form").reset();
 }
 
-// --- Dashboard Metrics & Business Plan Generator ---
+// --- Dashboard Metrics ---
 function renderDashboardMetrics() {
   const total = sampleResponses.length;
   if (total === 0) return;
@@ -582,19 +448,6 @@ function renderDashboardMetrics() {
   document.getElementById("m-eoi-count").textContent = eoiCount;
   document.getElementById("m-hot-leads").textContent = hotLeads;
   document.getElementById("m-followup-count").textContent = followupCount;
-
-  // Render Business Plan Generator Paragraph
-  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  const bpParagraph = `As of ${todayStr}, Braivanta had received ${total} demo feedback responses from key education stakeholders, including QTVIs, SENCOs, Teaching Assistants, and Local Authority VI Officers across mainstream and specialist settings. The average problem severity score reported by practitioners was ${avgSeverity}/5.0. The highest-rated feature was ${topFeature[0]} with an average usefulness score of ${topFeature[1].toFixed(2)}/5.0. Overall, ${pilotInterestPct}% of respondents indicated interest in a controlled pilot, and ${paidPilotPct}% confirmed they would consider or possibly consider a £3,000 paid pilot, subject to defined scope and internal approval. The most commonly selected monthly subscription preference was ${topPrice}. Additionally, ${eoiCount} respondents confirmed their response can be treated as a non-binding expression of interest, with ${hotLeads} categorized as high-priority hot leads.`;
-
-  document.getElementById("bp-generated-text").textContent = bpParagraph;
-}
-
-function copyBusinessPlanText() {
-  const text = document.getElementById("bp-generated-text").textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Business Plan Evidence text copied to clipboard!");
-  });
 }
 
 // --- Chart.js Visualization Engine ---
