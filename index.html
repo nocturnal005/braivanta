@@ -421,12 +421,23 @@
     <!-- ==================== TAB 4: ANALYTICS DASHBOARD ==================== -->
     <section id="dashboard-tab" class="tab-content">
       
+      <!-- Live User Data Notice Banner (Visible when empty) -->
+      <div id="no-data-banner" class="card shadow-sm margin-bottom border-teal" style="display: none; background-color: #f0fdf4;">
+        <div class="card-body flex-between" style="padding: 1rem 1.5rem;">
+          <div>
+            <h4 style="margin: 0; color: #0f766e;">🟢 Live User Data Collection Active</h4>
+            <p class="subtext" style="margin: 0.25rem 0 0 0;">All sample demo figures have been removed. The dashboard is now awaiting real-time feedback submissions from visitors.</p>
+          </div>
+          <button class="btn btn-sm btn-teal" onclick="switchToFormTab()">📝 Submit Test Response</button>
+        </div>
+      </div>
+
       <!-- Headline Metrics Cards Grid -->
       <div class="metrics-grid">
         <div class="metric-card">
           <span class="metric-label">Total Responses</span>
           <span class="metric-value" id="m-total-resp">0</span>
-          <span class="metric-subtext">Live sample & submissions</span>
+          <span class="metric-subtext">Captured user submissions</span>
         </div>
         <div class="metric-card">
           <span class="metric-label">Avg Problem Severity</span>
@@ -558,9 +569,12 @@
         <div class="card-header border-bottom flex-between">
           <div>
             <h2>Deliverable 6: Raw Data & Evidence Export Schema</h2>
-            <p class="subtext">View and export all live form responses and pre-loaded sample validation dataset.</p>
+            <p class="subtext">View and export all live form responses captured from users.</p>
           </div>
-          <button class="btn btn-primary" onclick="exportDataToCSV()">📥 Download Data as CSV</button>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary btn-sm" onclick="clearAllCapturedData()">🗑️ Clear Captured Data</button>
+            <button class="btn btn-primary btn-sm" onclick="exportDataToCSV()">📥 Download Data as CSV</button>
+          </div>
         </div>
         <div class="card-body padding-none">
           <div class="table-responsive">
@@ -641,11 +655,11 @@
         <div class="form-group margin-top">
           <label for="admin-passcode-input">Team Passcode:</label>
           <input type="password" id="admin-passcode-input" class="form-input" placeholder="Enter team passcode" onkeyup="handlePasscodeKeyUp(event)">
-          <span id="passcode-error" class="text-red subtext" style="display:none; margin-top:0.4rem;">Incorrect passcode. Default passcode is: braivanta2026</span>
+          <span id="passcode-error" class="text-red subtext" style="display:none; margin-top:0.4rem;">Incorrect team passcode. Please try again.</span>
         </div>
 
         <div class="margin-top flex-between">
-          <span class="subtext">Default Passcode: <code>braivanta2026</code></span>
+          <span class="subtext">🔒 Restricted Access</span>
           <button class="btn btn-primary" onclick="submitAdminPasscode()">Unlock Dashboard</button>
         </div>
       </div>

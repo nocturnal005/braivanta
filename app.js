@@ -1,162 +1,60 @@
 /* ==========================================================================
    Braivanta Validation Journey - Application Logic & Analytics Engine
+   Live Data Collection Mode (Sample Data Removed)
    ========================================================================== */
 
-// --- Global Dataset Initialization (Pre-populated 24 Realistic Feedback Responses) ---
-let sampleResponses = [
-  {
-    timestamp: "2026-07-24 09:15",
-    name: "Dr. Eleanor Vance",
-    title: "Lead QTVI Specialist",
-    org: "Norfolk Local Authority Sensory Service",
-    email: "e.vance@norfolk.gov.uk",
-    orgType: "Local authority VI service",
-    role: "QTVI",
-    challenges: ["Delays converting Braille work into teacher-readable English", "Limited availability of Braille-literate staff", "Difficulty describing STEM diagrams, graphs or tables"],
-    severity: 5,
-    f1: 5, f2: 4, f3: 5, f4: 4, f5: 5,
-    mostValuable: "Braille Work Review & STEM Support are critical. Converting unverified Braille takes our team 5+ hours per pupil weekly.",
-    interest: "Strongly interested",
-    positions: ["We would consider a controlled pilot", "We would consider a paid pilot", "We would consider a monthly subscription after successful testing"],
-    pilot3k: "Yes",
-    monthlyPrice: "£400 per month",
-    inclusions: ["Staff training", "Technical support", "Data-protection documentation", "QTVI/Braille review workflow", "STEM Support feature"],
-    eoi: "Yes, on behalf of my organisation",
-    followup: "Yes",
-    approver: "Head of LA Sensory Support Services",
-    comments: "Accuracy and human QTVI verification are non-negotiable for our LA team. Braivanta's human-in-the-loop audit trail gives us total confidence.",
-    theme: "Braille transcription need",
-    sentiment: "Positive",
-    priority: "High"
-  },
-  {
-    timestamp: "2026-07-24 09:40",
-    name: "Marcus Thorne",
-    title: "Head of SEN & Inclusion",
-    org: "St. Jude Multi-Academy Trust",
-    email: "m.thorne@stjude-mat.org.uk",
-    orgType: "Multi-academy trust",
-    role: "SENCO",
-    challenges: ["Difficulty giving timely teacher feedback", "Difficulty describing STEM diagrams, graphs or tables", "Difficulty evidencing who reviewed or approved work"],
-    severity: 4,
-    f1: 4, f2: 5, f3: 4, f4: 4, f5: 5,
-    mostValuable: "Assessment-Safe and Approvals. We need clear audit trails for SEN inspection compliance.",
-    interest: "Very interested",
-    positions: ["We would consider a controlled pilot", "We are interested, subject to senior approval"],
-    pilot3k: "Possibly, subject to approval",
-    monthlyPrice: "£300 per month",
-    inclusions: ["Staff training", "Data-protection documentation", "Approval and audit trail", "Multi-school access"],
-    eoi: "Yes, as professional feedback only",
-    followup: "Yes",
-    approver: "Director of Trust Operations",
-    comments: "Need clear DPIA (Data Protection Impact Assessment) documents before MAT-wide rollout.",
-    theme: "Data protection concern",
-    sentiment: "Neutral",
-    priority: "High"
-  },
-  {
-    timestamp: "2026-07-24 10:12",
-    name: "Claire Bennett",
-    title: "Senior VI Teaching Assistant",
-    org: "Oakridge Mainstream Academy",
-    email: "c.bennett@oakridge.edu.uk",
-    orgType: "Mainstream school",
-    role: "Teaching assistant",
-    challenges: ["Delays converting Braille work into teacher-readable English", "Difficulty adapting visual materials safely"],
-    severity: 4,
-    f1: 5, f2: 4, f3: 4, f4: 3, f5: 4,
-    mostValuable: "Braille Work Review. I spend hours manually typing out Braille sheets so subject teachers can grade homework.",
-    interest: "Very interested",
-    positions: ["We would like to continue testing the demo", "We are interested, subject to senior approval"],
-    pilot3k: "Possibly, if the scope is clear",
-    monthlyPrice: "£200 per month",
-    inclusions: ["Staff training", "QTVI/Braille review workflow", "Technical support"],
-    eoi: "Yes, as professional feedback only",
-    followup: "Possibly",
-    approver: "School SENCO & Business Manager",
-    comments: "Great tool! Staff training must be included in the price so TAs can get up to speed quickly.",
-    theme: "Training/support need",
-    sentiment: "Positive",
-    priority: "Medium"
-  },
-  {
-    timestamp: "2026-07-24 11:05",
-    name: "David Miller",
-    title: "Service Manager - Sensory Impairment",
-    org: "Hampshire County Council VI Service",
-    email: "d.miller@hants.gov.uk",
-    orgType: "Local authority VI service",
-    role: "Local authority officer",
-    challenges: ["Limited availability of Braille-literate staff", "Difficulty maintaining clear accessibility records", "Difficulty evidencing who reviewed or approved work"],
-    severity: 5,
-    f1: 5, f2: 5, f3: 5, f4: 5, f5: 5,
-    mostValuable: "Approvals and Pupil Records. Managing records across 14 schools in the county is extremely difficult right now.",
-    interest: "Strongly interested",
-    positions: ["We would consider a paid pilot", "We would consider a monthly subscription after successful testing"],
-    pilot3k: "Yes",
-    monthlyPrice: "More than £400 per month",
-    inclusions: ["Multi-school access", "Reporting", "Approval and audit trail", "Technical support", "Staff training"],
-    eoi: "Yes, on behalf of my organisation",
-    followup: "Yes",
-    approver: "Head of Inclusion & SEND Commissioning",
-    comments: "If Braivanta can cover county-wide licenses, £3,000 for a pilot is very reasonable for our budget.",
-    theme: "Human verification",
-    sentiment: "Positive",
-    priority: "High"
-  },
-  {
-    timestamp: "2026-07-24 11:30",
-    name: "Fiona Gallagher",
-    title: "Headteacher",
-    org: "St. Vincent Specialist School for Sensory Impairments",
-    email: "head@stvincents-specialist.sch.uk",
-    orgType: "Specialist school",
-    role: "School leader",
-    challenges: ["Difficulty describing STEM diagrams, graphs or tables", "Difficulty adapting visual materials safely"],
-    severity: 4,
-    f1: 4, f2: 5, f3: 5, f4: 4, f5: 4,
-    mostValuable: "STEM Support. GCSE Science and Maths diagrams present a massive bottleneck for visually impaired pupils.",
-    interest: "Very interested",
-    positions: ["We would consider a controlled pilot", "We would prefer an annual licence"],
-    pilot3k: "Yes",
-    monthlyPrice: "We would prefer an annual licence",
-    inclusions: ["STEM Support feature", "Assessment-Safe feature", "Staff training"],
-    eoi: "Yes, on behalf of my organisation",
-    followup: "Yes",
-    approver: "Board of Governors & Headteacher",
-    comments: "We prefer annual licensing due to school financial year budget cycles.",
-    theme: "STEM access",
-    sentiment: "Positive",
-    priority: "High"
-  },
-  {
-    timestamp: "2026-07-24 12:15",
-    name: "Graham Roberts",
-    title: "IT & Information Governance Manager",
-    org: "Kent Education Learning Trust",
-    email: "g.roberts@kelt.org.uk",
-    orgType: "Multi-academy trust",
-    role: "IT/data protection",
-    challenges: ["Difficulty evidencing who reviewed or approved work", "Difficulty maintaining clear accessibility records"],
-    severity: 3,
-    f1: 4, f2: 4, f3: 3, f4: 4, f5: 5,
-    mostValuable: "Approvals audit trail and security controls.",
-    interest: "Moderately interested",
-    positions: ["We are interested, subject to IT/data protection approval", "We need more information before deciding"],
-    pilot3k: "Unable to say at this stage",
-    monthlyPrice: "Unable to estimate at this stage",
-    inclusions: ["Data-protection documentation", "Approval and audit trail"],
-    eoi: "Possibly, but procurement or data-protection approval is needed",
-    followup: "Possibly",
-    approver: "Trust Data Protection Officer",
-    comments: "Must confirm data hosting region (UK/EU) and AI model vendor terms before any pilot approval.",
-    theme: "Data protection concern",
-    sentiment: "Concern",
-    priority: "Medium"
+// --- Global Dataset Initialization ---
+// Array to store real user form submissions, persisted in localStorage
+let capturedResponses = [];
+
+function loadCapturedResponses() {
+  try {
+    const data = localStorage.getItem("braivanta_live_responses");
+    if (data) {
+      capturedResponses = JSON.parse(data);
+    } else {
+      capturedResponses = [];
+    }
+  } catch (e) {
+    console.error("Failed to load response data from localStorage:", e);
+    capturedResponses = [];
   }
-];
+}
 
+function saveCapturedResponses() {
+  try {
+    localStorage.setItem("braivanta_live_responses", JSON.stringify(capturedResponses));
+  } catch (e) {
+    console.error("Failed to save response data to localStorage:", e);
+  }
+}
 
+function clearAllCapturedData() {
+  if (capturedResponses.length === 0) {
+    alert("There is currently no captured user data to clear.");
+    return;
+  }
+  if (confirm("Are you sure you want to clear all captured user feedback data? This action cannot be undone.")) {
+    capturedResponses = [];
+    localStorage.removeItem("braivanta_live_responses");
+    renderDashboardMetrics();
+    renderCharts();
+    renderThemeQuotes();
+    renderRawDataTable();
+    alert("All captured response data has been cleared.");
+  }
+}
+
+// Utility function to escape HTML string rendering
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 // --- Chart Instances ---
 let chartInstances = {};
@@ -172,17 +70,19 @@ function calculateLeadScore(item) {
   if (item.interest === "Very interested" || item.interest === "Strongly interested") score += 2;
 
   // 3. Position: Controlled pilot (+1), Paid pilot (+2)
-  if (item.positions.some(p => p.includes("controlled pilot"))) score += 1;
-  if (item.positions.some(p => p.includes("paid pilot"))) score += 2;
+  if (Array.isArray(item.positions)) {
+    if (item.positions.some(p => p.includes("controlled pilot"))) score += 1;
+    if (item.positions.some(p => p.includes("paid pilot"))) score += 2;
+  }
 
   // 4. £3,000 Pilot Willingness (Yes / Possibly = +2)
-  if (item.pilot3k === "Yes" || item.pilot3k.includes("Possibly")) score += 2;
+  if (item.pilot3k === "Yes" || (item.pilot3k && item.pilot3k.includes("Possibly"))) score += 2;
 
   // 5. Subscription level (£300, £400, >£400 = +2)
   if (["£300 per month", "£400 per month", "More than £400 per month"].includes(item.monthlyPrice)) score += 2;
 
   // 6. Non-binding EOI (Yes = +2)
-  if (item.eoi.includes("Yes")) score += 2;
+  if (item.eoi && item.eoi.includes("Yes")) score += 2;
 
   // 7. Follow-up Call (Yes = +1)
   if (item.followup === "Yes") score += 1;
@@ -205,6 +105,7 @@ const ADMIN_PASSCODE = "braivanta2026";
 
 // --- App Setup & Event Listeners ---
 document.addEventListener("DOMContentLoaded", () => {
+  loadCapturedResponses();
   checkUrlAdminParam();
   initTabs();
   renderDashboardMetrics();
@@ -317,11 +218,10 @@ function switchToFormTab() {
   document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
   const formNavBtn = document.querySelector('[data-tab="form-tab"]');
-  formNavBtn.classList.add("active");
-  document.getElementById("form-tab").classList.add("active");
+  if (formNavBtn) formNavBtn.classList.add("active");
+  const formTab = document.getElementById("form-tab");
+  if (formTab) formTab.classList.add("active");
 }
-
-
 
 // --- Form Submit Handler ---
 function handleFormSubmit(e) {
@@ -329,6 +229,13 @@ function handleFormSubmit(e) {
 
   // Extract Form Data
   const getChecked = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(c => c.value);
+
+  const severityEl = document.querySelector('input[name="severity"]:checked');
+  const f1El = document.querySelector('input[name="f1"]:checked');
+  const f2El = document.querySelector('input[name="f2"]:checked');
+  const f3El = document.querySelector('input[name="f3"]:checked');
+  const f4El = document.querySelector('input[name="f4"]:checked');
+  const f5El = document.querySelector('input[name="f5"]:checked');
 
   const newEntry = {
     timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
@@ -339,12 +246,12 @@ function handleFormSubmit(e) {
     orgType: document.getElementById("resp-orgtype").value,
     role: document.getElementById("resp-role").value,
     challenges: getChecked("challenge"),
-    severity: parseInt(document.querySelector('input[name="severity"]:checked').value),
-    f1: parseInt(document.querySelector('input[name="f1"]:checked').value),
-    f2: parseInt(document.querySelector('input[name="f2"]:checked').value),
-    f3: parseInt(document.querySelector('input[name="f3"]:checked').value),
-    f4: parseInt(document.querySelector('input[name="f4"]:checked').value),
-    f5: parseInt(document.querySelector('input[name="f5"]:checked').value),
+    severity: severityEl ? parseInt(severityEl.value) : 3,
+    f1: f1El ? parseInt(f1El.value) : 3,
+    f2: f2El ? parseInt(f2El.value) : 3,
+    f3: f3El ? parseInt(f3El.value) : 3,
+    f4: f4El ? parseInt(f4El.value) : 3,
+    f5: f5El ? parseInt(f5El.value) : 3,
     mostValuable: document.getElementById("most-valuable").value,
     interest: document.getElementById("overall-interest").value,
     positions: getChecked("position"),
@@ -360,9 +267,10 @@ function handleFormSubmit(e) {
     priority: "High"
   };
 
-  sampleResponses.unshift(newEntry);
+  capturedResponses.unshift(newEntry);
+  saveCapturedResponses();
 
-  alert("Thank you! Your feedback response has been submitted and live analytics updated.");
+  alert("Thank you! Your feedback response has been recorded and live analytics updated.");
   
   document.getElementById("feedback-form").reset();
   
@@ -370,8 +278,9 @@ function handleFormSubmit(e) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
   const dashNavBtn = document.querySelector('[data-tab="dashboard-tab"]');
-  dashNavBtn.classList.add("active");
-  document.getElementById("dashboard-tab").classList.add("active");
+  if (dashNavBtn) dashNavBtn.classList.add("active");
+  const dashTab = document.getElementById("dashboard-tab");
+  if (dashTab) dashTab.classList.add("active");
 
   renderDashboardMetrics();
   renderCharts();
@@ -380,23 +289,44 @@ function handleFormSubmit(e) {
 }
 
 function resetDemoForm() {
-  document.getElementById("feedback-form").reset();
+  const form = document.getElementById("feedback-form");
+  if (form) form.reset();
 }
 
 // --- Dashboard Metrics ---
 function renderDashboardMetrics() {
-  const total = sampleResponses.length;
-  if (total === 0) return;
+  const total = capturedResponses.length;
+  const banner = document.getElementById("no-data-banner");
 
-  const avgSeverity = (sampleResponses.reduce((acc, r) => acc + r.severity, 0) / total).toFixed(1);
+  if (total === 0) {
+    if (banner) banner.style.display = "block";
+
+    document.getElementById("m-total-resp").textContent = "0";
+    document.getElementById("m-avg-severity").textContent = "0.0 / 5.0";
+    document.getElementById("m-top-feature").textContent = "N/A";
+    document.getElementById("m-top-feature-score").textContent = "Score: N/A";
+    document.getElementById("m-low-feature").textContent = "N/A";
+    document.getElementById("m-low-feature-score").textContent = "Score: N/A";
+    document.getElementById("m-pilot-interest-pct").textContent = "0%";
+    document.getElementById("m-paid-pilot-pct").textContent = "0%";
+    document.getElementById("m-top-price").textContent = "N/A";
+    document.getElementById("m-eoi-count").textContent = "0";
+    document.getElementById("m-hot-leads").textContent = "0";
+    document.getElementById("m-followup-count").textContent = "0";
+    return;
+  }
+
+  if (banner) banner.style.display = "none";
+
+  const avgSeverity = (capturedResponses.reduce((acc, r) => acc + (r.severity || 0), 0) / total).toFixed(1);
 
   // Feature Ratings Sums
   const fSums = {
-    "Braille Work Review": sampleResponses.reduce((acc, r) => acc + r.f1, 0) / total,
-    "Assessment-Safe": sampleResponses.reduce((acc, r) => acc + r.f2, 0) / total,
-    "STEM Support": sampleResponses.reduce((acc, r) => acc + r.f3, 0) / total,
-    "Pupil Records": sampleResponses.reduce((acc, r) => acc + r.f4, 0) / total,
-    "Approvals & Audit Trail": sampleResponses.reduce((acc, r) => acc + r.f5, 0) / total
+    "Braille Work Review": capturedResponses.reduce((acc, r) => acc + (r.f1 || 0), 0) / total,
+    "Assessment-Safe": capturedResponses.reduce((acc, r) => acc + (r.f2 || 0), 0) / total,
+    "STEM Support": capturedResponses.reduce((acc, r) => acc + (r.f3 || 0), 0) / total,
+    "Pupil Records": capturedResponses.reduce((acc, r) => acc + (r.f4 || 0), 0) / total,
+    "Approvals & Audit Trail": capturedResponses.reduce((acc, r) => acc + (r.f5 || 0), 0) / total
   };
 
   const sortedFeatures = Object.entries(fSums).sort((a,b) => b[1] - a[1]);
@@ -404,44 +334,47 @@ function renderDashboardMetrics() {
   const lowFeature = sortedFeatures[sortedFeatures.length - 1];
 
   // Pilot Interest %
-  const pilotInterestCount = sampleResponses.filter(r => 
-    r.positions.some(p => p.includes("pilot"))
+  const pilotInterestCount = capturedResponses.filter(r => 
+    Array.isArray(r.positions) && r.positions.some(p => p.includes("pilot"))
   ).length;
   const pilotInterestPct = Math.round((pilotInterestCount / total) * 100);
 
   // Paid £3k Pilot %
-  const paidPilotCount = sampleResponses.filter(r => 
-    r.pilot3k === "Yes" || r.pilot3k.includes("Possibly")
+  const paidPilotCount = capturedResponses.filter(r => 
+    r.pilot3k === "Yes" || (r.pilot3k && r.pilot3k.includes("Possibly"))
   ).length;
   const paidPilotPct = Math.round((paidPilotCount / total) * 100);
 
   // Top Price Tier
   const priceCounts = {};
-  sampleResponses.forEach(r => {
-    priceCounts[r.monthlyPrice] = (priceCounts[r.monthlyPrice] || 0) + 1;
+  capturedResponses.forEach(r => {
+    if (r.monthlyPrice) {
+      priceCounts[r.monthlyPrice] = (priceCounts[r.monthlyPrice] || 0) + 1;
+    }
   });
-  const topPrice = Object.entries(priceCounts).sort((a,b) => b[1] - a[1])[0][0];
+  const sortedPrices = Object.entries(priceCounts).sort((a,b) => b[1] - a[1]);
+  const topPrice = sortedPrices.length > 0 ? sortedPrices[0][0] : "N/A";
 
   // EOI Count
-  const eoiCount = sampleResponses.filter(r => r.eoi.includes("Yes")).length;
+  const eoiCount = capturedResponses.filter(r => r.eoi && r.eoi.includes("Yes")).length;
 
   // Lead Scores & Hot Leads
   let hotLeads = 0;
-  sampleResponses.forEach(r => {
+  capturedResponses.forEach(r => {
     const { status } = calculateLeadScore(r);
     if (status === "Hot") hotLeads++;
   });
 
   // Follow-up Count
-  const followupCount = sampleResponses.filter(r => r.followup === "Yes" || r.followup === "Possibly").length;
+  const followupCount = capturedResponses.filter(r => r.followup === "Yes" || r.followup === "Possibly").length;
 
   // Update DOM Metric Cards
   document.getElementById("m-total-resp").textContent = total;
   document.getElementById("m-avg-severity").textContent = `${avgSeverity} / 5.0`;
-  document.getElementById("m-top-feature").textContent = topFeature[0];
-  document.getElementById("m-top-feature-score").textContent = `Avg Score: ${topFeature[1].toFixed(2)}/5`;
-  document.getElementById("m-low-feature").textContent = lowFeature[0];
-  document.getElementById("m-low-feature-score").textContent = `Avg Score: ${lowFeature[1].toFixed(2)}/5`;
+  document.getElementById("m-top-feature").textContent = topFeature ? topFeature[0] : "N/A";
+  document.getElementById("m-top-feature-score").textContent = topFeature ? `Avg Score: ${topFeature[1].toFixed(2)}/5` : "Score: N/A";
+  document.getElementById("m-low-feature").textContent = lowFeature ? lowFeature[0] : "N/A";
+  document.getElementById("m-low-feature-score").textContent = lowFeature ? `Avg Score: ${lowFeature[1].toFixed(2)}/5` : "Score: N/A";
   document.getElementById("m-pilot-interest-pct").textContent = `${pilotInterestPct}%`;
   document.getElementById("m-paid-pilot-pct").textContent = `${paidPilotPct}%`;
   document.getElementById("m-top-price").textContent = topPrice;
@@ -452,152 +385,197 @@ function renderDashboardMetrics() {
 
 // --- Chart.js Visualization Engine ---
 function renderCharts() {
-  const total = sampleResponses.length;
-  if (total === 0) return;
+  const total = capturedResponses.length;
 
   // Destroy previous charts if existing
-  Object.values(chartInstances).forEach(chart => chart.destroy());
+  Object.values(chartInstances).forEach(chart => {
+    if (chart && typeof chart.destroy === 'function') {
+      chart.destroy();
+    }
+  });
+  chartInstances = {};
 
   // 1. Feature Rankings Bar Chart
-  const ctxFeatures = document.getElementById('chart-feature-ranking').getContext('2d');
-  const fAverages = [
-    (sampleResponses.reduce((a,r) => a + r.f1, 0) / total).toFixed(2),
-    (sampleResponses.reduce((a,r) => a + r.f2, 0) / total).toFixed(2),
-    (sampleResponses.reduce((a,r) => a + r.f3, 0) / total).toFixed(2),
-    (sampleResponses.reduce((a,r) => a + r.f4, 0) / total).toFixed(2),
-    (sampleResponses.reduce((a,r) => a + r.f5, 0) / total).toFixed(2)
-  ];
+  const ctxFeaturesEl = document.getElementById('chart-feature-ranking');
+  if (ctxFeaturesEl) {
+    const ctxFeatures = ctxFeaturesEl.getContext('2d');
+    const fAverages = total > 0 ? [
+      (capturedResponses.reduce((a,r) => a + (r.f1 || 0), 0) / total).toFixed(2),
+      (capturedResponses.reduce((a,r) => a + (r.f2 || 0), 0) / total).toFixed(2),
+      (capturedResponses.reduce((a,r) => a + (r.f3 || 0), 0) / total).toFixed(2),
+      (capturedResponses.reduce((a,r) => a + (r.f4 || 0), 0) / total).toFixed(2),
+      (capturedResponses.reduce((a,r) => a + (r.f5 || 0), 0) / total).toFixed(2)
+    ] : [0, 0, 0, 0, 0];
 
-  chartInstances.features = new Chart(ctxFeatures, {
-    type: 'bar',
-    data: {
-      labels: ['Braille Review', 'Assessment-Safe', 'STEM Support', 'Pupil Records', 'Approvals'],
-      datasets: [{
-        label: 'Avg Usefulness Score (1–5)',
-        data: fAverages,
-        backgroundColor: ['#0D9488', '#2563EB', '#10B981', '#F59E0B', '#6366F1'],
-        borderRadius: 6
-      }]
-    },
-    options: { responsive: true, scales: { y: { min: 0, max: 5 } } }
-  });
+    chartInstances.features = new Chart(ctxFeatures, {
+      type: 'bar',
+      data: {
+        labels: ['Braille Review', 'Assessment-Safe', 'STEM Support', 'Pupil Records', 'Approvals'],
+        datasets: [{
+          label: 'Avg Usefulness Score (1–5)',
+          data: fAverages,
+          backgroundColor: ['#0D9488', '#2563EB', '#10B981', '#F59E0B', '#6366F1'],
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, scales: { y: { min: 0, max: 5 } } }
+    });
+  }
 
   // 2. Lead Temperature Breakdown (Doughnut)
-  const ctxStatus = document.getElementById('chart-lead-status').getContext('2d');
-  let statusCounts = { Hot: 0, Warm: 0, Cold: 0 };
-  sampleResponses.forEach(r => {
-    const { status } = calculateLeadScore(r);
-    statusCounts[status]++;
-  });
+  const ctxStatusEl = document.getElementById('chart-lead-status');
+  if (ctxStatusEl) {
+    const ctxStatus = ctxStatusEl.getContext('2d');
+    let statusCounts = { Hot: 0, Warm: 0, Cold: 0 };
+    if (total > 0) {
+      capturedResponses.forEach(r => {
+        const { status } = calculateLeadScore(r);
+        statusCounts[status]++;
+      });
+    }
 
-  chartInstances.status = new Chart(ctxStatus, {
-    type: 'doughnut',
-    data: {
-      labels: ['Hot Leads (Score ≥8)', 'Warm Leads (Score 4-7)', 'Cold Leads (Score 0-3)'],
-      datasets: [{
-        data: [statusCounts.Hot, statusCounts.Warm, statusCounts.Cold],
-        backgroundColor: ['#EF4444', '#F59E0B', '#3B82F6']
-      }]
-    },
-    options: { responsive: true }
-  });
+    chartInstances.status = new Chart(ctxStatus, {
+      type: 'doughnut',
+      data: {
+        labels: ['Hot Leads (Score ≥8)', 'Warm Leads (Score 4-7)', 'Cold Leads (Score 0-3)'],
+        datasets: [{
+          data: [statusCounts.Hot, statusCounts.Warm, statusCounts.Cold],
+          backgroundColor: ['#EF4444', '#F59E0B', '#3B82F6']
+        }]
+      },
+      options: { responsive: true }
+    });
+  }
 
   // 3. Paid Pilot Willingness Pie Chart
-  const ctxPilot = document.getElementById('chart-pilot-willingness').getContext('2d');
-  const pilotCounts = {};
-  sampleResponses.forEach(r => {
-    pilotCounts[r.pilot3k] = (pilotCounts[r.pilot3k] || 0) + 1;
-  });
+  const ctxPilotEl = document.getElementById('chart-pilot-willingness');
+  if (ctxPilotEl) {
+    const ctxPilot = ctxPilotEl.getContext('2d');
+    const pilotCounts = {};
+    if (total > 0) {
+      capturedResponses.forEach(r => {
+        if (r.pilot3k) pilotCounts[r.pilot3k] = (pilotCounts[r.pilot3k] || 0) + 1;
+      });
+    } else {
+      pilotCounts["Awaiting Live Data"] = 0;
+    }
 
-  chartInstances.pilot = new Chart(ctxPilot, {
-    type: 'pie',
-    data: {
-      labels: Object.keys(pilotCounts),
-      datasets: [{
-        data: Object.values(pilotCounts),
-        backgroundColor: ['#10B981', '#14B8A6', '#3B82F6', '#94A3B8', '#EF4444', '#F59E0B']
-      }]
-    },
-    options: { responsive: true }
-  });
+    chartInstances.pilot = new Chart(ctxPilot, {
+      type: 'pie',
+      data: {
+        labels: Object.keys(pilotCounts),
+        datasets: [{
+          data: Object.values(pilotCounts),
+          backgroundColor: ['#10B981', '#14B8A6', '#3B82F6', '#94A3B8', '#EF4444', '#F59E0B']
+        }]
+      },
+      options: { responsive: true }
+    });
+  }
 
   // 4. Monthly Price Preference Bar Chart
-  const ctxPrice = document.getElementById('chart-price-preference').getContext('2d');
-  const priceTiers = ['£200 per month', '£300 per month', '£400 per month', 'More than £400 per month', 'We would prefer an annual licence', 'Unable to estimate at this stage'];
-  const priceCountsArr = priceTiers.map(tier => sampleResponses.filter(r => r.monthlyPrice === tier).length);
+  const ctxPriceEl = document.getElementById('chart-price-preference');
+  if (ctxPriceEl) {
+    const ctxPrice = ctxPriceEl.getContext('2d');
+    const priceTiers = ['£200 per month', '£300 per month', '£400 per month', 'More than £400 per month', 'We would prefer an annual licence', 'Unable to estimate at this stage'];
+    const priceCountsArr = priceTiers.map(tier => total > 0 ? capturedResponses.filter(r => r.monthlyPrice === tier).length : 0);
 
-  chartInstances.price = new Chart(ctxPrice, {
-    type: 'bar',
-    data: {
-      labels: ['£200/mo', '£300/mo', '£400/mo', '>£400/mo', 'Annual Licence', 'Unable to Estimate'],
-      datasets: [{
-        label: 'Number of Organisations',
-        data: priceCountsArr,
-        backgroundColor: '#0F766E',
-        borderRadius: 6
-      }]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-  });
+    chartInstances.price = new Chart(ctxPrice, {
+      type: 'bar',
+      data: {
+        labels: ['£200/mo', '£300/mo', '£400/mo', '>£400/mo', 'Annual Licence', 'Unable to Estimate'],
+        datasets: [{
+          label: 'Number of Organisations',
+          data: priceCountsArr,
+          backgroundColor: '#0F766E',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
 
   // 5. Respondents by Role
-  const ctxRoles = document.getElementById('chart-roles').getContext('2d');
-  const roleMap = {};
-  sampleResponses.forEach(r => {
-    roleMap[r.role] = (roleMap[r.role] || 0) + 1;
-  });
+  const ctxRolesEl = document.getElementById('chart-roles');
+  if (ctxRolesEl) {
+    const ctxRoles = ctxRolesEl.getContext('2d');
+    const roleMap = {};
+    if (total > 0) {
+      capturedResponses.forEach(r => {
+        if (r.role) roleMap[r.role] = (roleMap[r.role] || 0) + 1;
+      });
+    } else {
+      roleMap["Awaiting Data"] = 0;
+    }
 
-  chartInstances.roles = new Chart(ctxRoles, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(roleMap),
-      datasets: [{
-        label: 'Respondents',
-        data: Object.values(roleMap),
-        backgroundColor: '#1E293B',
-        borderRadius: 6
-      }]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-  });
+    chartInstances.roles = new Chart(ctxRoles, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(roleMap),
+        datasets: [{
+          label: 'Respondents',
+          data: Object.values(roleMap),
+          backgroundColor: '#1E293B',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
 
   // 6. Problem Severity Distribution
-  const ctxSeverity = document.getElementById('chart-severity').getContext('2d');
-  const sevArr = [1, 2, 3, 4, 5].map(lvl => sampleResponses.filter(r => r.severity === lvl).length);
+  const ctxSeverityEl = document.getElementById('chart-severity');
+  if (ctxSeverityEl) {
+    const ctxSeverity = ctxSeverityEl.getContext('2d');
+    const sevArr = [1, 2, 3, 4, 5].map(lvl => total > 0 ? capturedResponses.filter(r => r.severity === lvl).length : 0);
 
-  chartInstances.severity = new Chart(ctxSeverity, {
-    type: 'bar',
-    data: {
-      labels: ['1 (Not serious)', '2 (Slightly)', '3 (Moderately)', '4 (Serious)', '5 (Very serious)'],
-      datasets: [{
-        label: 'Respondents',
-        data: sevArr,
-        backgroundColor: '#F59E0B',
-        borderRadius: 6
-      }]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-  });
+    chartInstances.severity = new Chart(ctxSeverity, {
+      type: 'bar',
+      data: {
+        labels: ['1 (Not serious)', '2 (Slightly)', '3 (Moderately)', '4 (Serious)', '5 (Very serious)'],
+        datasets: [{
+          label: 'Respondents',
+          data: sevArr,
+          backgroundColor: '#F59E0B',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
 }
 
 // --- Customer Theme Quotes Table ---
 function renderThemeQuotes() {
-  const filterVal = document.getElementById("theme-filter").value;
+  const filterEl = document.getElementById("theme-filter");
+  const filterVal = filterEl ? filterEl.value : "ALL";
   const tbody = document.getElementById("quotes-table-body");
+  if (!tbody) return;
   tbody.innerHTML = "";
 
   const filtered = filterVal === "ALL" 
-    ? sampleResponses 
-    : sampleResponses.filter(r => r.theme === filterVal);
+    ? capturedResponses 
+    : capturedResponses.filter(r => r.theme === filterVal);
+
+  if (filtered.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td colspan="5" style="text-align: center; padding: 2rem; color: #64748b;">
+        <em>No user feedback quotes recorded yet. Submissions from visitors will appear here automatically.</em>
+      </td>
+    `;
+    tbody.appendChild(tr);
+    return;
+  }
 
   filtered.forEach(item => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><strong>${item.role}</strong><br><span class="subtext">${item.orgType}</span></td>
-      <td>"${item.mostValuable || item.comments}"</td>
-      <td><span class="badge badge-info">${item.theme}</span></td>
-      <td><span class="badge ${item.sentiment === 'Positive' ? 'badge-hot' : 'badge-cold'}">${item.sentiment}</span></td>
-      <td><strong>${item.priority} Priority</strong></td>
+      <td><strong>${escapeHtml(item.role)}</strong><br><span class="subtext">${escapeHtml(item.orgType)}</span></td>
+      <td>"${escapeHtml(item.mostValuable || item.comments)}"</td>
+      <td><span class="badge badge-info">${escapeHtml(item.theme)}</span></td>
+      <td><span class="badge ${item.sentiment === 'Positive' ? 'badge-hot' : 'badge-cold'}">${escapeHtml(item.sentiment)}</span></td>
+      <td><strong>${escapeHtml(item.priority)} Priority</strong></td>
     `;
     tbody.appendChild(tr);
   });
@@ -606,9 +584,21 @@ function renderThemeQuotes() {
 // --- Raw & Cleaned Data Table ---
 function renderRawDataTable() {
   const tbody = document.getElementById("raw-data-table-body");
+  if (!tbody) return;
   tbody.innerHTML = "";
 
-  sampleResponses.forEach(r => {
+  if (capturedResponses.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td colspan="11" style="text-align: center; padding: 2rem; color: #64748b;">
+        <em>No live user data captured yet. As visitors submit feedback using the form, real-time responses will be displayed here.</em>
+      </td>
+    `;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  capturedResponses.forEach(r => {
     const { score, status } = calculateLeadScore(r);
     const badgeClass = status === "Hot" ? "badge-hot" : (status === "Warm" ? "badge-warm" : "badge-cold");
 
@@ -616,15 +606,15 @@ function renderRawDataTable() {
     tr.innerHTML = `
       <td><strong>${score} pts</strong></td>
       <td><span class="badge ${badgeClass}">${status}</span></td>
-      <td><strong>${r.name}</strong><br><span class="subtext">${r.title}</span></td>
-      <td>${r.org}</td>
-      <td>${r.severity}/5</td>
-      <td>[${r.f1}, ${r.f2}, ${r.f3}, ${r.f4}, ${r.f5}]</td>
-      <td>${r.interest}</td>
-      <td>${r.pilot3k}</td>
-      <td>${r.monthlyPrice}</td>
-      <td>${r.eoi}</td>
-      <td>${r.followup}</td>
+      <td><strong>${escapeHtml(r.name)}</strong><br><span class="subtext">${escapeHtml(r.title)}</span></td>
+      <td>${escapeHtml(r.org)}</td>
+      <td>${r.severity || 0}/5</td>
+      <td>[${r.f1||0}, ${r.f2||0}, ${r.f3||0}, ${r.f4||0}, ${r.f5||0}]</td>
+      <td>${escapeHtml(r.interest)}</td>
+      <td>${escapeHtml(r.pilot3k)}</td>
+      <td>${escapeHtml(r.monthlyPrice)}</td>
+      <td>${escapeHtml(r.eoi)}</td>
+      <td>${escapeHtml(r.followup)}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -632,7 +622,9 @@ function renderRawDataTable() {
 
 // --- Export CSV Function ---
 function exportDataToCSV() {
-  if (sampleResponses.length === 0) return alert("No data to export.");
+  if (capturedResponses.length === 0) {
+    return alert("No live user feedback data has been captured yet to export.");
+  }
 
   const headers = [
     "Timestamp", "Name", "Job Title", "Organisation", "Email", "Org Type", "Role",
@@ -641,13 +633,25 @@ function exportDataToCSV() {
     "EOI Status", "Follow-up Willingness", "Approver Identified", "Comments", "Lead Score", "Lead Status"
   ];
 
-  const rows = sampleResponses.map(r => {
+  const rows = capturedResponses.map(r => {
     const { score, status } = calculateLeadScore(r);
     return [
-      `"${r.timestamp}"`, `"${r.name}"`, `"${r.title}"`, `"${r.org}"`, `"${r.email}"`, `"${r.orgType}"`, `"${r.role}"`,
-      r.severity, r.f1, r.f2, r.f3, r.f4, r.f5,
-      `"${r.mostValuable.replace(/"/g, '""')}"`, `"${r.interest}"`, `"${r.pilot3k}"`, `"${r.monthlyPrice}"`,
-      `"${r.eoi}"`, `"${r.followup}"`, `"${r.approver || ''}"`, `"${r.comments.replace(/"/g, '""')}"`,
+      `"${r.timestamp}"`,
+      `"${(r.name || '').replace(/"/g, '""')}"`,
+      `"${(r.title || '').replace(/"/g, '""')}"`,
+      `"${(r.org || '').replace(/"/g, '""')}"`,
+      `"${(r.email || '').replace(/"/g, '""')}"`,
+      `"${(r.orgType || '').replace(/"/g, '""')}"`,
+      `"${(r.role || '').replace(/"/g, '""')}"`,
+      r.severity || 0, r.f1 || 0, r.f2 || 0, r.f3 || 0, r.f4 || 0, r.f5 || 0,
+      `"${(r.mostValuable || '').replace(/"/g, '""')}"`,
+      `"${(r.interest || '').replace(/"/g, '""')}"`,
+      `"${(r.pilot3k || '').replace(/"/g, '""')}"`,
+      `"${(r.monthlyPrice || '').replace(/"/g, '""')}"`,
+      `"${(r.eoi || '').replace(/"/g, '""')}"`,
+      `"${(r.followup || '').replace(/"/g, '""')}"`,
+      `"${(r.approver || '').replace(/"/g, '""')}"`,
+      `"${(r.comments || '').replace(/"/g, '""')}"`,
       score, status
     ].join(",");
   });
@@ -656,7 +660,7 @@ function exportDataToCSV() {
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `Braivanta_Validation_Evidence_${new Date().toISOString().substring(0,10)}.csv`);
+  link.setAttribute("download", `Braivanta_Live_User_Data_${new Date().toISOString().substring(0,10)}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
