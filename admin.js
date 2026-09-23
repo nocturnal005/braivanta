@@ -98,7 +98,9 @@ function renderDashboard(data) {
     ${distributionTable("Staff time spent (Q6)", s.problem.staffTime)}
     ${distributionTable("Reported impact (Q5)", s.problem.impacts)}
     ${distributionTable("Current approach / alternative (Q7)", s.problem.currentApproaches)}
-    ${rawList("Main problem statements (Q3, before the demo)", s.problem.mainProblems, "No problem statements yet.")}`;
+    ${rawList("Main problem statements (Q3, before the demo)", s.problem.mainProblems, "No problem statements yet.")}
+    ${rawList("Other impacts described (Q5)", s.problem.impactsOther, "No other impacts described.")}
+    ${rawList("Other current approaches described (Q7)", s.problem.approachesOther, "No other approaches described.")}`;
   const solution = `
     ${distributionTable("Functions actually tested (Q8)", s.solution.testedFeatures)}
     ${distributionTable("Technical blocker (Q9)", s.solution.technicalBlocker)}

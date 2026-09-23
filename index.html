@@ -202,16 +202,22 @@
               <label class="choice"><input type="checkbox" name="problem_impacts" value="Learning/assessment materials are delayed"> Learning/assessment materials are delayed</label>
               <label class="choice"><input type="checkbox" name="problem_impacts" value="Additional external costs are incurred"> Additional external costs are incurred</label>
               <label class="choice"><input type="checkbox" name="problem_impacts" value="Records/reviews are difficult to coordinate"> Records/reviews are difficult to coordinate</label>
-              <label class="choice"><input type="checkbox" name="problem_impacts" value="No significant impact"> No significant impact</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="No significant impact" data-exclusive> No significant impact</label>
               <label class="choice"><input type="checkbox" name="problem_impacts" value="Other"> Other</label>
             </div>
             <p class="field-error" id="err-problem_impacts" hidden></p>
+            <div class="sub-question" id="field-problem_impacts_other" data-show-when="problem_impacts=Other" hidden>
+              <label for="problem_impacts_other">Please specify the other impact (optional)</label>
+              <input type="text" id="problem_impacts_other" name="problem_impacts_other" class="form-input" maxlength="300" aria-describedby="err-problem_impacts_other">
+              <p class="field-error" id="err-problem_impacts_other" hidden></p>
+            </div>
           </fieldset>
 
           <fieldset class="question" id="q-6" data-question="6" data-field="staff_time_burden" aria-describedby="err-staff_time_burden">
             <legend><span class="q-num">Q6</span> Approximately how much staff time is spent dealing with this problem?</legend>
             <div class="choice-grid">
-              <label class="choice"><input type="radio" name="staff_time_burden" value="Less than 1 hour per week" required> Less than 1 hour per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="No staff time / not applicable" required> No staff time / not applicable</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="Less than 1 hour per week"> Less than 1 hour per week</label>
               <label class="choice"><input type="radio" name="staff_time_burden" value="1–2 hours per week"> 1–2 hours per week</label>
               <label class="choice"><input type="radio" name="staff_time_burden" value="3–5 hours per week"> 3–5 hours per week</label>
               <label class="choice"><input type="radio" name="staff_time_burden" value="6–10 hours per week"> 6–10 hours per week</label>
@@ -234,8 +240,14 @@
               <label class="choice"><input type="checkbox" name="current_approaches" value="Email/spreadsheets/documents"> Email/spreadsheets/documents</label>
               <label class="choice"><input type="checkbox" name="current_approaches" value="No consistent process"> No consistent process</label>
               <label class="choice"><input type="checkbox" name="current_approaches" value="Other"> Other</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Not applicable / no current problem to manage" data-exclusive> Not applicable / no current problem to manage</label>
             </div>
             <p class="field-error" id="err-current_approaches" hidden></p>
+            <div class="sub-question" id="field-current_approaches_other" data-show-when="current_approaches=Other" hidden>
+              <label for="current_approaches_other">Please specify the other approach (optional)</label>
+              <input type="text" id="current_approaches_other" name="current_approaches_other" class="form-input" maxlength="300" aria-describedby="err-current_approaches_other">
+              <p class="field-error" id="err-current_approaches_other" hidden></p>
+            </div>
           </fieldset>
 
           </fieldset>
@@ -262,7 +274,7 @@
               <label class="choice"><input type="checkbox" name="tested_features" value="Pupil Voice"> Pupil Voice</label>
               <label class="choice"><input type="checkbox" name="tested_features" value="Review &amp; Approvals"> Review &amp; Approvals</label>
               <label class="choice"><input type="checkbox" name="tested_features" value="Dashboard"> Dashboard</label>
-              <label class="choice"><input type="checkbox" name="tested_features" value="I only viewed the product"> I only viewed the product</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="I only viewed the product" data-exclusive> I only viewed the product</label>
             </div>
             <p class="field-error" id="err-tested_features" hidden></p>
           </fieldset>

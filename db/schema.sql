@@ -16,8 +16,10 @@ CREATE TABLE IF NOT EXISTS validation_responses (
   main_problem                text        NOT NULL,
   problem_frequency           text        NOT NULL,
   problem_impacts             jsonb       NOT NULL,
+  problem_impacts_other       text,
   staff_time_burden           text        NOT NULL,
   current_approaches          jsonb       NOT NULL,
+  current_approaches_other    text,
 
   -- Q8–Q15: after the demo
   tested_features             jsonb       NOT NULL,

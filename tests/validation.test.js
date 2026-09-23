@@ -88,3 +88,61 @@ test("conditional answers must match their trigger", () => {
   assert.equal(validateSubmission(validSubmission({ followup_permission: "No", contact_email: "test.person@example.org" })).ok, false);
   assert.equal(validateSubmission(validSubmission({ followup_permission: "" })).ok, false, "permission answer is required");
 });
+
+// ── Neutral negative evidence paths (PR #1 correction) ─────────────────────────
+test("A/B: 'no problem' pairs with no staff time and no current approach; the negative fixture records no artificial time cost", () => {
+  const negative = negativeSubmission();
+  assert.equal(negative.problem_frequency, "We do not experience this problem");
+  assert.equal(negative.staff_time_burden, "No staff time / not applicable");
+  assert.deepEqual(negative.current_approaches, ["Not applicable / no current problem to manage"]);
+  const result = validateSubmission(negative);
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
+  assert.equal(result.value.staff_time_burden, "No staff time / not applicable");
+  assert.deepEqual(result.value.current_approaches, ["Not applicable / no current problem to manage"]);
+  const q6 = allFields().find((f) => f.field === "staff_time_burden").options;
+  assert.equal(q6[0], "No staff time / not applicable");
+  assert.ok(allFields().find((f) => f.field === "current_approaches").options.includes("Not applicable / no current problem to manage"));
+});
+
+test("C/D/E: exclusive answers cannot be combined with any other answer (server-side)", () => {
+  const cases = [
+    ["problem_impacts", ["No significant impact", "Staff time is lost"], "No significant impact"],
+    ["tested_features", ["I only viewed the product", "Braille Submissions"], "I only viewed the product"],
+    ["current_approaches", ["Not applicable / no current problem to manage", "QTVI/manual specialist process"], "Not applicable / no current problem to manage"],
+  ];
+  for (const [field, value, exclusive] of cases) {
+    const result = validateSubmission(validSubmission({ [field]: value }));
+    assert.equal(result.ok, false, field);
+    assert.equal(result.errors[field], "“" + exclusive + "” cannot be combined with other answers.");
+    // Order does not matter, and the exclusive answer on its own is valid.
+    assert.equal(validateSubmission(validSubmission({ [field]: [...value].reverse() })).ok, false, field + " reversed");
+    assert.equal(validateSubmission(validSubmission({ [field]: [exclusive] })).ok, true, field + " alone");
+  }
+  assert.deepEqual(
+    QUESTIONS.filter((q) => q.exclusive).map((q) => [q.number, q.exclusive]),
+    [
+      [5, ["No significant impact"]],
+      [7, ["Not applicable / no current problem to manage"]],
+      [8, ["I only viewed the product"]],
+    ],
+  );
+});
+
+test("G/H: Q5 and Q7 'Other' details are optional, limited to 300 characters, and accepted only with 'Other'", () => {
+  for (const [field, detail, other, notOther] of [
+    ["problem_impacts", "problem_impacts_other", ["Other"], ["Staff time is lost"]],
+    ["current_approaches", "current_approaches_other", ["Other", "General AI tools"], ["General AI tools"]],
+  ]) {
+    const withOther = validateSubmission(validSubmission({ [field]: other, [detail]: "  Synthetic other detail  " }));
+    assert.equal(withOther.ok, true, JSON.stringify(withOther.errors));
+    assert.equal(withOther.value[detail], "Synthetic other detail");
+    const optional = validateSubmission(validSubmission({ [field]: other }));
+    assert.equal(optional.ok, true, detail + " stays optional");
+    assert.equal(optional.value[detail], null);
+    const stray = validateSubmission(validSubmission({ [field]: notOther, [detail]: "stray" }));
+    assert.equal(stray.ok, false);
+    assert.ok(detail in stray.errors);
+    assert.equal(validateSubmission(validSubmission({ [field]: other, [detail]: "x".repeat(301) })).ok, false, "300-character limit");
+    assert.equal(allFields().find((f) => f.field === detail).maxLength, 300);
+  }
+});

@@ -156,3 +156,32 @@ test("accessibility: grouped options use fieldset/legend, and every control is l
   assert.match(readFileSync("styles.css", "utf8"), /:focus-visible \{/);
   assert.match(readFileSync("styles.css", "utf8"), /\.field-error::before \{ content: "Error: "; \}/, "errors are not colour-only");
 });
+
+// ── Neutral negative evidence paths (PR #1 correction) ─────────────────────────
+test("F/I: exclusive answers are marked on the page exactly as defined, enforced in the browser, and there are still 15 questions", () => {
+  assert.equal([...html.matchAll(/data-question="/g)].length, 15);
+  const marked = [...html.matchAll(/name="([a-z_]+)" value="([^"]*)" data-exclusive/g)].map((m) => [m[1], decode(m[2])]);
+  const defined = QUESTIONS.filter((q) => q.exclusive).flatMap((q) => q.exclusive.map((option) => [q.field, option]));
+  assert.deepEqual(marked, defined);
+  assert.equal((html.match(/data-exclusive/g) ?? []).length, 3);
+  // Browser: an exclusive choice clears the rest; any other choice clears the exclusive one.
+  const handler = app.slice(app.indexOf("function enforceExclusive"), app.indexOf("// Conditional sub-questions"));
+  assert.match(handler, /if \(input\.type !== "checkbox" \|\| !input\.checked \|\| !MULTI_FIELDS\.has\(input\.name\)\) return;/);
+  assert.match(handler, /if \(other !== input && \(input\.hasAttribute\("data-exclusive"\) \|\| other\.hasAttribute\("data-exclusive"\)\)\) other\.checked = false;/);
+  assert.match(app, /form\.addEventListener\("change", \(event\) => \{\n\s+enforceExclusive\(event\);\n\s+applyConditions\(\);/);
+  assert.match(app, /const MULTI_FIELDS = new Set\(\["problem_impacts", "current_approaches", "tested_features"\]\);/);
+});
+
+test("G/H: Q5 and Q7 'Other' details sit inside their question and appear only when 'Other' is selected", () => {
+  const q5 = section('data-question="5"', 'data-question="6"');
+  const q7 = section('data-question="7"', 'id="pre-demo-actions"');
+  assert.match(q5, /<div class="sub-question" id="field-problem_impacts_other" data-show-when="problem_impacts=Other" hidden>/);
+  assert.match(q5, /<label for="problem_impacts_other">Please specify the other impact \(optional\)<\/label>/);
+  assert.match(q5, /name="problem_impacts_other" class="form-input" maxlength="300"/);
+  assert.match(q7, /<div class="sub-question" id="field-current_approaches_other" data-show-when="current_approaches=Other" hidden>/);
+  assert.match(q7, /<label for="current_approaches_other">Please specify the other approach \(optional\)<\/label>/);
+  assert.match(q7, /name="current_approaches_other" class="form-input" maxlength="300"/);
+  // Conditions read every selected checkbox, so a multi-select "Other" reveals the detail.
+  assert.ok(app.includes('const current = [...form.querySelectorAll(`input[name="${CSS.escape(field)}"]:checked`)].map((c) => c.value);'));
+  assert.ok(app.includes('const show = list.split("|").some((value) => current.includes(value));'));
+});

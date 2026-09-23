@@ -190,3 +190,24 @@ test("the dashboard shows counts with denominators and no stale local data", () 
   assert.match(admin, /fetch\("\/api\/admin\/export", \{ headers: \{ Authorization: `Bearer \$\{token\}` \}/);
   assert.doesNotMatch(readFileSync("index.html", "utf8"), /chart\.js|Chart\(/i);
 });
+
+test("neutral negative paths are reported as answered; 'Other' details are raw evidence and exported", () => {
+  const responses = [
+    { id: "n1", created_at: "2026-09-24T10:00:00Z", ...negativeSubmission() },
+    row({ problem_impacts: ["Other"], problem_impacts_other: "Synthetic: parents chase updates", current_approaches: ["Other"], current_approaches_other: "Synthetic: volunteer transcriber" }, 2),
+  ];
+  const s = summarise(responses);
+  assert.equal(rowOf(s.problem.staffTime, "No staff time / not applicable").label, "1 of 2 (50%)");
+  assert.equal(rowOf(s.problem.currentApproaches, "Not applicable / no current problem to manage").label, "1 of 2 (50%)");
+  assert.equal(rowOf(s.problem.impacts, "No significant impact").label, "1 of 2 (50%)");
+  assert.deepEqual(s.problem.impactsOther.map((i) => i.text), ["Synthetic: parents chase updates"]);
+  assert.deepEqual(s.problem.approachesOther.map((i) => i.text), ["Synthetic: volunteer transcriber"]);
+  const csv = toCsv(responses);
+  const [header, first, second] = csv.replace(/^﻿/, "").trim().split("\r\n");
+  assert.match(header, /q5_problem_impacts,q5_problem_impacts_other,q6_staff_time_burden,q7_current_approaches,q7_current_approaches_other,q8_tested_features/);
+  assert.match(first, /"No significant impact","","No staff time \/ not applicable","Not applicable \/ no current problem to manage",""/);
+  assert.match(second, /"Other","Synthetic: parents chase updates"/);
+  assert.match(second, /"Synthetic: volunteer transcriber"/);
+  assert.match(readFileSync("db/schema.sql", "utf8"), /problem_impacts_other\s+text,[\s\S]*current_approaches_other\s+text,/);
+  assert.match(readFileSync("admin.js", "utf8"), /rawList\("Other impacts described \(Q5\)"[\s\S]*rawList\("Other current approaches described \(Q7\)"/);
+});

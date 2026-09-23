@@ -76,12 +76,23 @@ function writeValues(scope, values) {
 }
 
 // ---------------------------------------------------------------------------
-// Conditional sub-questions (data-show-when="field=Value1|Value2")
+// Mutually exclusive answers (data-exclusive, mirrored by server validation): choosing an
+// exclusive answer clears the rest of its question; choosing any other answer clears it.
+function enforceExclusive(event) {
+  const input = event.target;
+  if (input.type !== "checkbox" || !input.checked || !MULTI_FIELDS.has(input.name)) return;
+  for (const other of form.querySelectorAll(`input[type="checkbox"][name="${CSS.escape(input.name)}"]`)) {
+    if (other !== input && (input.hasAttribute("data-exclusive") || other.hasAttribute("data-exclusive"))) other.checked = false;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Conditional sub-questions (data-show-when="field=Value1|Value2"; multi-select: any selected)
 function applyConditions() {
   for (const block of form.querySelectorAll("[data-show-when]")) {
     const [field, list] = block.dataset.showWhen.split("=");
-    const current = form.querySelector(`input[name="${CSS.escape(field)}"]:checked`)?.value ?? "";
-    const show = list.split("|").includes(current);
+    const current = [...form.querySelectorAll(`input[name="${CSS.escape(field)}"]:checked`)].map((c) => c.value);
+    const show = list.split("|").some((value) => current.includes(value));
     block.hidden = !show;
     for (const control of block.querySelectorAll("input, textarea, select")) {
       control.disabled = !show;
@@ -292,7 +303,10 @@ function initNavigation() {
 function start() {
   initNavigation();
   admin = initAdmin({ showTab, closeLogin: () => closeModal(document.getElementById("admin-auth-modal")) });
-  form.addEventListener("change", applyConditions);
+  form.addEventListener("change", (event) => {
+    enforceExclusive(event);
+    applyConditions();
+  });
   form.addEventListener("submit", submitFeedback);
   document.getElementById("continue-to-demo").addEventListener("click", continueToDemo);
   applyConditions();

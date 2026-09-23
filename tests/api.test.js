@@ -70,6 +70,7 @@ test("the Postgres repository inserts raw answers with JSONB arrays via a parame
   const saved = await repo.insertResponse({ ...validSubmission(), technical_blocker_detail: null, main_barrier_other: null, contact_name: null, contact_email: null });
   assert.match(calls[0].text, /INSERT INTO validation_responses/);
   assert.match(calls[0].text, /::jsonb/);
+  assert.match(calls[0].text, /problem_impacts_other, staff_time_burden, current_approaches,\s+current_approaches_other/);
   assert.ok(calls[0].values.includes(JSON.stringify(["Staff time is lost", "Teacher feedback is delayed"])));
   assert.doesNotMatch(calls[0].text, /sentiment|priority|lead_score|theme/);
   assert.equal(saved.id, calls[0].values[0]);
