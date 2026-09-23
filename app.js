@@ -246,6 +246,10 @@ let lastFocus = null;
 function openModal(id) {
   const modal = document.getElementById(id);
   lastFocus = document.activeElement;
+  for (const error of modal.querySelectorAll(".field-error")) {
+    error.hidden = true;
+    error.textContent = "";
+  }
   modal.hidden = false;
   modal.classList.add("active");
   modal.querySelector("input, button")?.focus();

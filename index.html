@@ -417,15 +417,32 @@
 
     <!-- ==================== TEAM-ONLY EVIDENCE VIEWS (server-authenticated) ==================== -->
     <section id="dashboard-tab" class="tab-content" aria-labelledby="dashboard-heading">
-      <h2 id="dashboard-heading">Evidence dashboard</h2>
-      <p id="admin-status" class="subtext" role="status">Team login required.</p>
-      <div id="dashboard-content"></div>
+      <div class="evidence-header flex-between">
+        <div>
+          <h2 id="dashboard-heading">Evidence dashboard</h2>
+          <p class="subtext">What evidence have we actually collected? Counts are shown with their denominators; nothing is scored or classified.</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" data-admin-refresh>Refresh</button>
+      </div>
+      <p id="admin-status" class="admin-status" role="status">Team login required.</p>
+      <div id="dashboard-content" class="evidence-sections"></div>
     </section>
 
     <section id="export-tab" class="tab-content" aria-labelledby="export-heading">
-      <h2 id="export-heading">Data &amp; evidence export</h2>
-      <p class="subtext">Team login required.</p>
-      <div id="export-content"></div>
+      <div class="card shadow-sm">
+        <div class="card-header border-bottom flex-between">
+          <div>
+            <h2 id="export-heading">Data &amp; evidence export</h2>
+            <p class="subtext">Raw submitted answers from the central store. The CSV contains no scores, sentiment, themes or priorities.</p>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="btn btn-secondary btn-sm" data-admin-refresh>Refresh</button>
+            <button type="button" id="export-csv" class="btn btn-primary btn-sm">Download CSV</button>
+          </div>
+        </div>
+        <p id="export-status" class="admin-status" role="status"></p>
+        <div id="export-content" class="card-body padding-none"></div>
+      </div>
     </section>
 
   </main>
