@@ -99,28 +99,21 @@ function calculateLeadScore(item) {
 }
 
 // --- Admin Security & Access Control State ---
+// Team access is validated by the server (Authorization: Bearer). The token is held in memory
+// only for this page session; it is never stored, hard-coded or read from the URL.
 let isAdminUnlocked = false;
 let pendingAdminTab = null;
-const ADMIN_PASSCODE = "braivanta2026";
+let adminToken = null;
 
 // --- App Setup & Event Listeners ---
 document.addEventListener("DOMContentLoaded", () => {
   loadCapturedResponses();
-  checkUrlAdminParam();
   initTabs();
   renderDashboardMetrics();
   renderCharts();
   renderThemeQuotes();
   renderRawDataTable();
 });
-
-// Auto unlock if URL contains ?admin=true or ?mode=admin
-function checkUrlAdminParam() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("admin") === "true" || urlParams.get("mode") === "admin") {
-    unlockAdminAccess();
-  }
-}
 
 function checkAdminAccess(tabId, event) {
   if (!isAdminUnlocked) {
@@ -157,12 +150,23 @@ function handlePasscodeKeyUp(event) {
   }
 }
 
-function submitAdminPasscode() {
+async function submitAdminPasscode() {
   const input = document.getElementById("admin-passcode-input");
   const val = input ? input.value.trim() : "";
   const err = document.getElementById("passcode-error");
 
-  if (val === ADMIN_PASSCODE) {
+  let authorised = false;
+  if (val) {
+    try {
+      const response = await fetch("/api/admin/responses", { headers: { Authorization: `Bearer ${val}` }, cache: "no-store" });
+      authorised = response.ok;
+    } catch {
+      authorised = false;
+    }
+  }
+  if (authorised) {
+    adminToken = val;
+    if (input) input.value = "";
     unlockAdminAccess();
     closeAdminAuthModal();
     if (pendingAdminTab) {
