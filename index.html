@@ -1,53 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Braivanta - Demo Validation System & Analytics Dashboard</title>
-  <!-- Google Fonts -->
+  <title>Braivanta – Demo Review & Professional Feedback</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Top Navigation & Header -->
   <header class="app-header no-print">
     <div class="header-container">
       <div class="brand-block">
-        <div class="logo-badge">B</div>
+        <div class="logo-badge" aria-hidden="true">B</div>
         <div>
-          <h1 class="brand-title">Braivanta</h1>
+          <p class="brand-title">Braivanta</p>
           <p class="brand-tagline">Human-verified accessibility workflows for visually impaired learners.</p>
         </div>
       </div>
-      <button class="btn btn-sm btn-secondary no-print" onclick="openPrivacyModal()">🛡️ Data Protection & Privacy</button>
-      <button id="admin-auth-btn" class="btn btn-sm btn-teal no-print" onclick="openAdminAuthModal()">🔒 Team Login</button>
+      <div class="header-actions">
+        <button type="button" class="btn btn-sm btn-secondary" data-open-modal="privacy-modal">Data notice</button>
+        <button type="button" id="admin-auth-btn" class="btn btn-sm btn-teal" data-open-modal="admin-auth-modal">Team login</button>
+      </div>
     </div>
 
-    <!-- Navigation Tabs -->
-    <nav class="nav-tabs">
-      <button class="nav-btn active" data-tab="review-page-tab">📄 Demo Review Sheet</button>
-      <button class="nav-btn" data-tab="form-tab">📝 Feedback Form</button>
-      <button class="nav-btn admin-tab" data-tab="dashboard-tab" onclick="checkAdminAccess('dashboard-tab', event)">📊 Analytics Dashboard <span class="lock-icon">🔒</span></button>
-      <button class="nav-btn admin-tab" data-tab="export-tab" onclick="checkAdminAccess('export-tab', event)">📁 Data & Evidence Export <span class="lock-icon">🔒</span></button>
+    <nav class="nav-tabs" aria-label="Sections">
+      <button type="button" class="nav-btn active" data-tab="review-page-tab" aria-current="page">Demo review sheet</button>
+      <button type="button" class="nav-btn" data-tab="form-tab">Feedback questionnaire</button>
+      <button type="button" class="nav-btn admin-tab" data-tab="dashboard-tab">Evidence dashboard <span class="lock-icon" aria-label="team only">🔒</span></button>
+      <button type="button" class="nav-btn admin-tab" data-tab="export-tab">Data &amp; evidence export <span class="lock-icon" aria-label="team only">🔒</span></button>
     </nav>
   </header>
 
-  <main class="main-content">
+  <main id="main" class="main-content">
 
-    <!-- ==================== TAB 1: DEMO REVIEW SHEET ==================== -->
-    <section id="review-page-tab" class="tab-content active">
+    <!-- ==================== DEMO REVIEW SHEET ==================== -->
+    <section id="review-page-tab" class="tab-content active" aria-labelledby="review-heading">
       <div class="no-print print-actions-bar">
-        <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Save as PDF One-Pager</button>
-        <span class="badge badge-info">PDF / One-Page Layout Mode Enabled</span>
+        <button type="button" class="btn btn-secondary" data-print>Print / save as PDF</button>
       </div>
 
-      <!-- Printable Review Page Container -->
       <div class="printable-sheet card">
         <header class="sheet-header">
           <div class="sheet-brand">
@@ -55,66 +50,65 @@
             <div class="sheet-tagline">Human-verified accessibility workflows for visually impaired learners.</div>
           </div>
           <div class="sheet-badge-box">
-            <span class="sheet-principle">AI drafts. Humans verify.</span>
-            <span class="sheet-time">Review Time: 10–15 mins</span>
+            <span class="sheet-time">Review time: about 15–20 minutes</span>
           </div>
         </header>
 
         <div class="sheet-intro">
-          <h3>Welcome to the Braivanta Demo Review</h3>
+          <h1 id="review-heading">Braivanta demo review</h1>
           <p>
-            Braivanta is a secure, human-verified accessibility workflow platform for schools and VI education teams. 
-            It supports Braille work review, Assessment-Safe descriptions, STEM support, pupil records, and approval workflows. 
-            The platform uses AI to prepare drafts, but final decisions remain strictly with authorised staff, QTVIs, Braille-literate professionals, and teachers.
+            Thank you for helping us understand whether Braivanta addresses a real need. We are collecting
+            honest professional feedback — including “this is not a problem for us” or “this would not help”.
+            Braivanta prepares drafts to support education professionals; decisions stay with authorised staff.
           </p>
         </div>
 
         <div class="sheet-steps border-box">
-          <h4>How to Review the Demo (10 to 15 Minutes)</h4>
+          <h2>How the review works</h2>
           <ol class="steps-grid">
-            <li><strong>1. Open Demo:</strong> Access MVP demo at <a href="https://insighted-ai-mvp.vercel.app/login" target="_blank">insighted-ai-mvp.vercel.app/login</a></li>
-            <li><strong>2. Review 5 Features:</strong> Test Braille Work Review, Assessment-Safe, STEM Support, Pupil Records, Approvals</li>
-            <li><strong>3. Share Feedback:</strong> Complete the 10-min form to rate usefulness, pilot interest & pricing preferences</li>
+            <li><strong>1. Before the demo:</strong> answer Questions 1–7 about your current situation.</li>
+            <li><strong>2. Try the demo:</strong> the questionnaire opens <a href="https://insighted-ai-mvp.vercel.app/login" target="_blank" rel="noopener">insighted-ai-mvp.vercel.app/login</a> in a new tab.</li>
+            <li><strong>3. After the demo:</strong> answer Questions 8–15 about what you tested.</li>
           </ol>
         </div>
 
+        <h2 class="features-heading">Current Braivanta modules</h2>
         <div class="features-grid">
           <div class="feature-card">
-            <div class="feature-num">1</div>
-            <h4>Braille Work Review</h4>
-            <p>Upload or capture Braille work to generate an initial English draft. Staff review uncertain areas and send for QTVI verification before sharing with teachers.</p>
+            <div class="feature-num" aria-hidden="true">1</div>
+            <h3>Braille Submissions</h3>
+            <p>Upload Braille material, produce an English draft, require specialist verification, then support teacher assessment/feedback.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-num">2</div>
-            <h4>Assessment-Safe</h4>
-            <p>Prepares accessible descriptions for graphs, diagrams, and visual assessment materials, flagging wording that might reveal answers. Staff approve final suitability.</p>
+            <div class="feature-num" aria-hidden="true">2</div>
+            <h3>Assessment-Safe</h3>
+            <p>Prepare accessible descriptions of visual assessment material while protecting against answer leakage and requiring human approval.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-num">3</div>
-            <h4>STEM Support</h4>
-            <p>Structured descriptions for complex math, science, technology, engineering materials, circuits, graphs, tables, and labeled apparatus.</p>
+            <div class="feature-num" aria-hidden="true">3</div>
+            <h3>Tactile Graphics &amp; STEM</h3>
+            <p>Support preparation of complex diagrams/graphs/STEM material for tactile adaptation and specialist review.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-num">4</div>
-            <h4>Pupil Records</h4>
-            <p>Secure central place for authorised staff to manage accessibility records, submitted work, review status, verified outputs, and feedback history.</p>
+            <div class="feature-num" aria-hidden="true">4</div>
+            <h3>Pupil Voice</h3>
+            <p>Capture learner voice as first-party evidence for professional review without automated interpretation.</p>
           </div>
           <div class="feature-card span-2">
-            <div class="feature-num">5</div>
-            <h4>Approvals & Audit Trail</h4>
-            <p>Clear human-verification process recording when work was reviewed, corrected, approved, or returned for action. Creates an audit trail showing who completed each stage and when.</p>
+            <div class="feature-num" aria-hidden="true">5</div>
+            <h3>Review &amp; Approvals</h3>
+            <p>Role-aware cross-module review workflow showing what requires action and preserving approval evidence.</p>
           </div>
         </div>
 
         <div class="sheet-warning border-box warning-box">
-          <strong>⚠️ Safety & Demo-Use Warning:</strong>
-          <p>Please do <strong>not</strong> upload real pupil data, confidential school documents, live assessment material, or any personally identifiable information (PII) during demo testing. The demo is for product feedback only. Braivanta supports education professionals; it does not replace QTVIs, Braille-literate staff, teachers, SENCOs, or authorised reviewers.</p>
+          <strong>Demo material only.</strong>
+          <p>Please do not upload or enter pupil names, confidential school records, live assessment material or any other pupil-identifiable information. Use demo or anonymised material only.</p>
         </div>
 
         <footer class="sheet-footer flex-between">
           <div class="sheet-cta-links">
-            <a href="https://insighted-ai-mvp.vercel.app/login" target="_blank" class="sheet-btn">🔗 Open Demo Link</a>
-            <button class="sheet-btn btn-teal" onclick="switchToFormTab()">📝 Complete Feedback Form</button>
+            <button type="button" class="sheet-btn btn-teal" data-go-tab="form-tab">Start the questionnaire</button>
           </div>
           <div class="sheet-contact">
             <span>Contact: <strong>braivanta@gmail.com</strong> | <strong>+44 7423 511396</strong></span>
@@ -123,549 +117,369 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 3: FEEDBACK FORM ==================== -->
-    <section id="form-tab" class="tab-content">
+    <!-- ==================== FEEDBACK QUESTIONNAIRE (15 questions) ==================== -->
+    <section id="form-tab" class="tab-content" aria-labelledby="form-heading">
       <div class="card shadow-sm form-wrapper">
         <div class="card-header border-bottom">
-          <h2>Deliverable 3: Combined Feedback, Pricing & Expression of Interest Form</h2>
-          <p class="subtext">Non-binding validation questionnaire for education professionals (takes ~8 minutes).</p>
+          <h2 id="form-heading">Professional feedback questionnaire</h2>
+          <p class="subtext">15 questions. Questions 1–7 are answered before you see Braivanta; Questions 8–15 after you try the demo.</p>
         </div>
 
-        <form id="feedback-form" onsubmit="handleFormSubmit(event)">
-          
-          <!-- SECTION A -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section A: Respondent Details</legend>
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="resp-name">Full Name *</label>
-                <input type="text" id="resp-name" required class="form-input" placeholder="e.g. Sarah Jenkins">
-              </div>
-              <div class="form-group">
-                <label for="resp-title">Job Title *</label>
-                <input type="text" id="resp-title" required class="form-input" placeholder="e.g. Lead QTVI Specialist">
-              </div>
-              <div class="form-group">
-                <label for="resp-org">Organisation / School / Service *</label>
-                <input type="text" id="resp-org" required class="form-input" placeholder="e.g. Norfolk LA Sensory Service">
-              </div>
-              <div class="form-group">
-                <label for="resp-email">Email Address *</label>
-                <input type="email" id="resp-email" required class="form-input" placeholder="e.g. s.jenkins@norfolk.gov.uk">
-              </div>
-              <div class="form-group">
-                <label for="resp-orgtype">Organisation Type *</label>
-                <select id="resp-orgtype" required class="form-select">
-                  <option value="">-- Select Organisation Type --</option>
-                  <option value="Mainstream school">Mainstream school</option>
-                  <option value="Specialist school">Specialist school</option>
-                  <option value="Multi-academy trust">Multi-academy trust (MAT)</option>
-                  <option value="Local authority VI service">Local authority VI service</option>
-                  <option value="QTVI service">QTVI service</option>
-                  <option value="SEN department">SEN department</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="resp-role">Your Primary Role *</label>
-                <select id="resp-role" required class="form-select">
-                  <option value="">-- Select Primary Role --</option>
-                  <option value="Teacher">Teacher</option>
-                  <option value="Teaching assistant">Teaching assistant</option>
-                  <option value="QTVI">QTVI</option>
-                  <option value="SENCO">SENCO</option>
-                  <option value="School leader">School leader</option>
-                  <option value="Local authority officer">Local authority officer</option>
-                  <option value="IT/data protection">IT / Data Protection Lead</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+        <form id="feedback-form" novalidate>
+          <fieldset id="pre-demo-group" class="phase-group">
+            <legend class="section-title">Before the demo — Questions 1–7</legend>
+            <p class="phase-note">Please describe your current situation before looking at Braivanta.</p>
+
+          <fieldset class="question" id="q-1" data-question="1" data-field="role" aria-describedby="err-role">
+            <legend><span class="q-num">Q1</span> What best describes your professional role?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="role" value="QTVI" required> QTVI</label>
+              <label class="choice"><input type="radio" name="role" value="Teaching Assistant"> Teaching Assistant</label>
+              <label class="choice"><input type="radio" name="role" value="Teacher"> Teacher</label>
+              <label class="choice"><input type="radio" name="role" value="SENCO"> SENCO</label>
+              <label class="choice"><input type="radio" name="role" value="VI/Sensory Service Lead"> VI/Sensory Service Lead</label>
+              <label class="choice"><input type="radio" name="role" value="School/Trust Leader"> School/Trust Leader</label>
+              <label class="choice"><input type="radio" name="role" value="Local Authority Officer"> Local Authority Officer</label>
+              <label class="choice"><input type="radio" name="role" value="Accessibility / Inclusion Specialist"> Accessibility / Inclusion Specialist</label>
+              <label class="choice"><input type="radio" name="role" value="IT / Data Protection"> IT / Data Protection</label>
+              <label class="choice"><input type="radio" name="role" value="Procurement / Finance"> Procurement / Finance</label>
+              <label class="choice"><input type="radio" name="role" value="Other"> Other</label>
+            </div>
+            <p class="field-error" id="err-role" hidden></p>
+          </fieldset>
+
+          <fieldset class="question" id="q-2" data-question="2" data-field="organisation_type" aria-describedby="err-organisation_type">
+            <legend><span class="q-num">Q2</span> What type of organisation do you work for?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="organisation_type" value="Mainstream school" required> Mainstream school</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Specialist school"> Specialist school</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Multi-academy trust"> Multi-academy trust</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Local authority VI/Sensory Service"> Local authority VI/Sensory Service</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Independent/specialist service"> Independent/specialist service</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Further education provider"> Further education provider</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Higher education provider"> Higher education provider</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Charity / specialist organisation"> Charity / specialist organisation</label>
+              <label class="choice"><input type="radio" name="organisation_type" value="Other"> Other</label>
+            </div>
+            <p class="field-error" id="err-organisation_type" hidden></p>
+            <div class="sub-question" id="field-organisation_name">
+              <label for="organisation_name">Organisation / service name (optional)</label>
+              <input type="text" id="organisation_name" name="organisation_name" class="form-input" maxlength="200" aria-describedby="err-organisation_name">
+              <p class="field-error" id="err-organisation_name" hidden></p>
             </div>
           </fieldset>
 
-          <!-- SECTION B -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section B: Current Challenges & Severity</legend>
-            <div class="form-group">
-              <label>Which challenges do you currently experience in supporting visually impaired learners? (Select all that apply) *</label>
-              <div class="checkbox-grid">
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Delays converting Braille work into teacher-readable English"> Delays converting Braille work into teacher-readable English</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Limited availability of Braille-literate staff"> Limited availability of Braille-literate staff</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty giving timely teacher feedback"> Difficulty giving timely teacher feedback</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty adapting visual materials safely"> Difficulty adapting visual materials safely</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty describing STEM diagrams, graphs or tables"> Difficulty describing STEM diagrams, graphs or tables</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty managing review and approval workflows"> Difficulty managing review and approval workflows</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty maintaining clear accessibility records"> Difficulty maintaining clear accessibility records</label>
-                <label class="checkbox-label"><input type="checkbox" name="challenge" value="Difficulty evidencing who reviewed or approved work"> Difficulty evidencing who reviewed or approved work</label>
-              </div>
-            </div>
-
-            <div class="form-group margin-top">
-              <label for="severity-score">How serious is this problem in your setting? (1 = Not serious, 5 = Very serious) *</label>
-              <div class="rating-scale">
-                <label><input type="radio" name="severity" value="1" required> 1 - Not serious</label>
-                <label><input type="radio" name="severity" value="2"> 2 - Slightly</label>
-                <label><input type="radio" name="severity" value="3"> 3 - Moderately</label>
-                <label><input type="radio" name="severity" value="4"> 4 - Serious</label>
-                <label><input type="radio" name="severity" value="5"> 5 - Very serious</label>
-              </div>
-            </div>
+          <fieldset class="question" id="q-3" data-question="3" data-field="main_problem">
+            <legend><span class="q-num">Q3</span> Before seeing Braivanta: What is the main difficulty, if any, your organisation currently experiences when supporting visually impaired learners with accessible learning materials?</legend>
+            <p class="question-hint">Please answer in your own words. “None” is a valid answer.</p>
+            <label class="visually-hidden" for="main_problem">Question 3 answer</label>
+            <textarea id="main_problem" name="main_problem" class="form-textarea" rows="4" maxlength="2000" required aria-describedby="err-main_problem"></textarea>
+            <p class="field-error" id="err-main_problem" hidden></p>
           </fieldset>
 
-          <!-- SECTION C -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section C: Feature Usefulness Ratings (1 = Not useful, 5 = Extremely useful)</legend>
-            <div class="feature-ratings-table">
-              <div class="rating-row">
-                <div class="rating-feature-desc">
-                  <strong>1. Braille Work Review</strong>
-                  <p>Upload/capture Braille work, English draft, QTVI verification flow.</p>
-                </div>
-                <div class="rating-inputs">
-                  <label><input type="radio" name="f1" value="1" required> 1</label>
-                  <label><input type="radio" name="f1" value="2"> 2</label>
-                  <label><input type="radio" name="f1" value="3"> 3</label>
-                  <label><input type="radio" name="f1" value="4"> 4</label>
-                  <label><input type="radio" name="f1" value="5"> 5</label>
-                </div>
-              </div>
-
-              <div class="rating-row">
-                <div class="rating-feature-desc">
-                  <strong>2. Assessment-Safe</strong>
-                  <p>Descriptions for visual test materials flagging answer leakage.</p>
-                </div>
-                <div class="rating-inputs">
-                  <label><input type="radio" name="f2" value="1" required> 1</label>
-                  <label><input type="radio" name="f2" value="2"> 2</label>
-                  <label><input type="radio" name="f2" value="3"> 3</label>
-                  <label><input type="radio" name="f2" value="4"> 4</label>
-                  <label><input type="radio" name="f2" value="5"> 5</label>
-                </div>
-              </div>
-
-              <div class="rating-row">
-                <div class="rating-feature-desc">
-                  <strong>3. STEM Support</strong>
-                  <p>Structured descriptions for STEM diagrams, graphs, circuits & tables.</p>
-                </div>
-                <div class="rating-inputs">
-                  <label><input type="radio" name="f3" value="1" required> 1</label>
-                  <label><input type="radio" name="f3" value="2"> 2</label>
-                  <label><input type="radio" name="f3" value="3"> 3</label>
-                  <label><input type="radio" name="f3" value="4"> 4</label>
-                  <label><input type="radio" name="f3" value="5"> 5</label>
-                </div>
-              </div>
-
-              <div class="rating-row">
-                <div class="rating-feature-desc">
-                  <strong>4. Pupil Records</strong>
-                  <p>Central management for pupil accessibility work and history.</p>
-                </div>
-                <div class="rating-inputs">
-                  <label><input type="radio" name="f4" value="1" required> 1</label>
-                  <label><input type="radio" name="f4" value="2"> 2</label>
-                  <label><input type="radio" name="f4" value="3"> 3</label>
-                  <label><input type="radio" name="f4" value="4"> 4</label>
-                  <label><input type="radio" name="f4" value="5"> 5</label>
-                </div>
-              </div>
-
-              <div class="rating-row">
-                <div class="rating-feature-desc">
-                  <strong>5. Approvals & Audit Trail</strong>
-                  <p>Human verification log recording reviewer name and timestamp.</p>
-                </div>
-                <div class="rating-inputs">
-                  <label><input type="radio" name="f5" value="1" required> 1</label>
-                  <label><input type="radio" name="f5" value="2"> 2</label>
-                  <label><input type="radio" name="f5" value="3"> 3</label>
-                  <label><input type="radio" name="f5" value="4"> 4</label>
-                  <label><input type="radio" name="f5" value="5"> 5</label>
-                </div>
-              </div>
+          <fieldset class="question" id="q-4" data-question="4" data-field="problem_frequency" aria-describedby="err-problem_frequency">
+            <legend><span class="q-num">Q4</span> How frequently does this problem occur?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="problem_frequency" value="Daily" required> Daily</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="Several times a week"> Several times a week</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="Weekly"> Weekly</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="Several times a month"> Several times a month</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="Monthly"> Monthly</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="Rarely"> Rarely</label>
+              <label class="choice"><input type="radio" name="problem_frequency" value="We do not experience this problem"> We do not experience this problem</label>
             </div>
-
-            <div class="form-group margin-top">
-              <label for="most-valuable">Which feature would be most valuable to your organisation, and why? *</label>
-              <textarea id="most-valuable" required class="form-textarea" rows="3" placeholder="e.g. Braille Work Review because converting unverified Braille takes up 4 hours of QTVI time weekly..."></textarea>
-            </div>
+            <p class="field-error" id="err-problem_frequency" hidden></p>
           </fieldset>
 
-          <!-- SECTION D -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section D: Overall Interest & Organisational Position</legend>
-            <div class="form-group">
-              <label for="overall-interest">After reviewing the demo, how interested would your organisation be in Braivanta? *</label>
-              <select id="overall-interest" required class="form-select">
-                <option value="">-- Select Interest Level --</option>
-                <option value="Not interested">Not interested</option>
-                <option value="Slightly interested">Slightly interested</option>
-                <option value="Moderately interested">Moderately interested</option>
-                <option value="Very interested">Very interested</option>
-                <option value="Strongly interested">Strongly interested</option>
-              </select>
+          <fieldset class="question" id="q-5" data-question="5" data-field="problem_impacts" aria-describedby="err-problem_impacts">
+            <legend><span class="q-num">Q5</span> What impact does this problem currently have?</legend>
+            <p class="question-hint">Select all that apply.</p>
+            <div class="choice-grid">
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Staff time is lost"> Staff time is lost</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Teacher feedback is delayed"> Teacher feedback is delayed</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Pupil feedback is delayed"> Pupil feedback is delayed</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Specialist staff capacity is stretched"> Specialist staff capacity is stretched</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Learning/assessment materials are delayed"> Learning/assessment materials are delayed</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Additional external costs are incurred"> Additional external costs are incurred</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Records/reviews are difficult to coordinate"> Records/reviews are difficult to coordinate</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="No significant impact"> No significant impact</label>
+              <label class="choice"><input type="checkbox" name="problem_impacts" value="Other"> Other</label>
             </div>
-
-            <div class="form-group margin-top">
-              <label>Which best describes your organisation's position? (Select all that apply) *</label>
-              <div class="checkbox-grid">
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We would like to continue testing the demo"> We would like to continue testing the demo</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We would consider a controlled pilot"> We would consider a controlled pilot</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We would consider a paid pilot"> We would consider a paid pilot</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We would consider a monthly subscription after successful testing"> We would consider a monthly subscription after successful testing</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We are interested, subject to senior approval"> We are interested, subject to senior approval</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We are interested, subject to IT/data protection approval"> We are interested, subject to IT/data protection approval</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We need more information before deciding"> We need more information before deciding</label>
-                <label class="checkbox-label"><input type="checkbox" name="position" value="We are not interested at this stage"> We are not interested at this stage</label>
-              </div>
-            </div>
+            <p class="field-error" id="err-problem_impacts" hidden></p>
           </fieldset>
 
-          <!-- SECTION E -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section E: Willingness to Pay & Pilot Pricing</legend>
-            <div class="form-group">
-              <label for="pilot-3k">Would your organisation consider a controlled paid pilot at £3,000? *</label>
-              <select id="pilot-3k" required class="form-select">
-                <option value="">-- Select Willingness to Consider --</option>
-                <option value="Yes">Yes</option>
-                <option value="Possibly, subject to approval">Possibly, subject to approval</option>
-                <option value="Possibly, if the scope is clear">Possibly, if the scope is clear</option>
-                <option value="No, we would only test for free">No, we would only test for free</option>
-                <option value="No, not interested in a pilot">No, not interested in a pilot</option>
-                <option value="Unable to say at this stage">Unable to say at this stage</option>
-              </select>
+          <fieldset class="question" id="q-6" data-question="6" data-field="staff_time_burden" aria-describedby="err-staff_time_burden">
+            <legend><span class="q-num">Q6</span> Approximately how much staff time is spent dealing with this problem?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="staff_time_burden" value="Less than 1 hour per week" required> Less than 1 hour per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="1–2 hours per week"> 1–2 hours per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="3–5 hours per week"> 3–5 hours per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="6–10 hours per week"> 6–10 hours per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="More than 10 hours per week"> More than 10 hours per week</label>
+              <label class="choice"><input type="radio" name="staff_time_burden" value="Unable to estimate"> Unable to estimate</label>
             </div>
-
-            <div class="form-group margin-top">
-              <label for="monthly-price">If the pilot was successful, what monthly subscription level would your organisation be most willing to consider? *</label>
-              <select id="monthly-price" required class="form-select">
-                <option value="">-- Select Preferred Monthly Subscription --</option>
-                <option value="£200 per month">£200 per month</option>
-                <option value="£300 per month">£300 per month</option>
-                <option value="£400 per month">£400 per month</option>
-                <option value="More than £400 per month">More than £400 per month</option>
-                <option value="We would prefer an annual licence">We would prefer an annual licence</option>
-                <option value="Unable to estimate at this stage">Unable to estimate at this stage</option>
-              </select>
-            </div>
-
-            <div class="form-group margin-top">
-              <label>What would need to be included for this price to feel reasonable? (Select all that apply) *</label>
-              <div class="checkbox-grid">
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Staff training"> Staff training</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Technical support"> Technical support</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Data-protection documentation"> Data-protection documentation</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="QTVI/Braille review workflow"> QTVI/Braille review workflow</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Assessment-Safe feature"> Assessment-Safe feature</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="STEM Support feature"> STEM Support feature</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Pupil Records feature"> Pupil Records feature</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Approval and audit trail"> Approval and audit trail</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Multi-user access"> Multi-user access</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Multi-school access"> Multi-school access</label>
-                <label class="checkbox-label"><input type="checkbox" name="inclusions" value="Reporting"> Reporting</label>
-              </div>
-            </div>
+            <p class="field-error" id="err-staff_time_burden" hidden></p>
           </fieldset>
 
-          <!-- SECTION F -->
-          <fieldset class="form-section">
-            <legend class="section-title">Section F: Non-Binding Expression of Interest</legend>
-            <div class="disclaimer-box margin-bottom">
-              <p><strong>Legal Disclaimer Notice:</strong> By submitting this form, I confirm that I have reviewed the Braivanta demo and am providing non-binding feedback on behalf of myself and/or my organisation. Where indicated, this feedback may include interest in further testing, a possible pilot or a future subscription. This does not create a legal obligation to purchase, subscribe or participate in a pilot. Any future arrangement would be subject to internal approval, procurement, safeguarding, data protection review and formal written agreement.</p>
+          <fieldset class="question" id="q-7" data-question="7" data-field="current_approaches" aria-describedby="err-current_approaches">
+            <legend><span class="q-num">Q7</span> How does your organisation currently manage this problem?</legend>
+            <p class="question-hint">Select all that apply.</p>
+            <div class="choice-grid">
+              <label class="choice"><input type="checkbox" name="current_approaches" value="QTVI/manual specialist process"> QTVI/manual specialist process</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Braille-literate TA"> Braille-literate TA</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Teacher/manual process"> Teacher/manual process</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="External specialist/service"> External specialist/service</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Existing accessibility software"> Existing accessibility software</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="General AI tools"> General AI tools</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Email/spreadsheets/documents"> Email/spreadsheets/documents</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="No consistent process"> No consistent process</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Other"> Other</label>
             </div>
-
-            <div class="form-group">
-              <label for="eoi-status">Can this response be treated as a non-binding expression of interest? *</label>
-              <select id="eoi-status" required class="form-select">
-                <option value="">-- Select EOI Option --</option>
-                <option value="Yes, on behalf of my organisation">Yes, on behalf of my organisation</option>
-                <option value="Yes, as professional feedback only">Yes, as professional feedback only</option>
-                <option value="Possibly, but senior approval is needed">Possibly, but senior approval is needed</option>
-                <option value="Possibly, but procurement or data-protection approval is needed">Possibly, but procurement or data-protection approval is needed</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-            <div class="form-group margin-top">
-              <label for="followup-call">Would you be willing to have a short follow-up conversation? *</label>
-              <select id="followup-call" required class="form-select">
-                <option value="">-- Select Option --</option>
-                <option value="Yes">Yes</option>
-                <option value="Possibly">Possibly</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-            <div class="form-group margin-top">
-              <label for="approver-info">Who would normally approve a pilot or purchase of this kind in your organisation?</label>
-              <input type="text" id="approver-info" class="form-input" placeholder="e.g. Head of Sensory Services / Director of Inclusion">
-            </div>
-
-            <div class="form-group margin-top">
-              <label for="further-comments">Any further comments, concerns or suggestions?</label>
-              <textarea id="further-comments" class="form-textarea" rows="3" placeholder="Optional comments regarding data protection, training, feature requests..."></textarea>
-            </div>
+            <p class="field-error" id="err-current_approaches" hidden></p>
           </fieldset>
 
-          <div class="form-actions flex-between margin-top">
-            <button type="button" class="btn btn-secondary" onclick="resetDemoForm()">Reset Form</button>
-            <button type="submit" class="btn btn-primary btn-lg">🚀 Submit Feedback & Update Dashboard</button>
+          </fieldset>
+
+          <div id="pre-demo-actions" class="phase-actions">
+            <p class="subtext">When you continue, your answers to Questions 1–7 are locked and the Braivanta demo opens in a new tab. Return to this tab to answer Questions 8–15.</p>
+            <p class="field-error" id="err-pre-demo" role="alert" hidden></p>
+            <button type="button" id="continue-to-demo" class="btn btn-primary btn-lg">Continue to demo</button>
           </div>
+          <p id="pre-demo-locked-note" class="locked-note" hidden>
+            <span aria-hidden="true">🔒</span> Questions 1–7 are locked. <a href="https://insighted-ai-mvp.vercel.app/login" target="_blank" rel="noopener">Open the demo again</a>
+          </p>
+
+          <fieldset id="post-demo-group" class="phase-group" hidden>
+            <legend class="section-title">After the demo — Questions 8–15</legend>
+
+          <fieldset class="question" id="q-8" data-question="8" data-field="tested_features" aria-describedby="err-tested_features">
+            <legend><span class="q-num">Q8</span> Which Braivanta functions did you actually test?</legend>
+            <p class="question-hint">Only select functions you actually used. Select all that apply.</p>
+            <div class="choice-grid">
+              <label class="choice"><input type="checkbox" name="tested_features" value="Braille Submissions"> Braille Submissions</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="Assessment-Safe"> Assessment-Safe</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="Tactile Graphics &amp; STEM"> Tactile Graphics &amp; STEM</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="Pupil Voice"> Pupil Voice</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="Review &amp; Approvals"> Review &amp; Approvals</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="Dashboard"> Dashboard</label>
+              <label class="choice"><input type="checkbox" name="tested_features" value="I only viewed the product"> I only viewed the product</label>
+            </div>
+            <p class="field-error" id="err-tested_features" hidden></p>
+          </fieldset>
+
+          <fieldset class="question" id="q-9" data-question="9" data-field="technical_blocker" aria-describedby="err-technical_blocker">
+            <legend><span class="q-num">Q9</span> Did anything technical prevent you from properly evaluating the demo?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="technical_blocker" value="No" required> No</label>
+              <label class="choice"><input type="radio" name="technical_blocker" value="Yes"> Yes</label>
+            </div>
+            <p class="field-error" id="err-technical_blocker" hidden></p>
+            <div class="sub-question" id="field-technical_blocker_detail" data-show-when="technical_blocker=Yes" hidden>
+              <label for="technical_blocker_detail">Please briefly describe what happened.</label>
+              <textarea id="technical_blocker_detail" name="technical_blocker_detail" class="form-textarea" rows="3" maxlength="1000" aria-describedby="err-technical_blocker_detail"></textarea>
+              <p class="field-error" id="err-technical_blocker_detail" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="question" id="q-10" data-question="10" data-field="solution_help" aria-describedby="err-solution_help">
+            <legend><span class="q-num">Q10</span> Based on what you tested, would Braivanta help address the main problem you identified earlier?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="solution_help" value="Yes, substantially" required> Yes, substantially</label>
+              <label class="choice"><input type="radio" name="solution_help" value="Yes, somewhat"> Yes, somewhat</label>
+              <label class="choice"><input type="radio" name="solution_help" value="Possibly"> Possibly</label>
+              <label class="choice"><input type="radio" name="solution_help" value="Probably not"> Probably not</label>
+              <label class="choice"><input type="radio" name="solution_help" value="No"> No</label>
+              <label class="choice"><input type="radio" name="solution_help" value="Unable to judge"> Unable to judge</label>
+            </div>
+            <p class="field-error" id="err-solution_help" hidden></p>
+          </fieldset>
+
+          <fieldset class="question" id="q-11" data-question="11" data-field="current_process_comparison" aria-describedby="err-current_process_comparison">
+            <legend><span class="q-num">Q11</span> Compared with your current way of working, Braivanta appears to be:</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="current_process_comparison" value="Much better" required> Much better</label>
+              <label class="choice"><input type="radio" name="current_process_comparison" value="Somewhat better"> Somewhat better</label>
+              <label class="choice"><input type="radio" name="current_process_comparison" value="About the same"> About the same</label>
+              <label class="choice"><input type="radio" name="current_process_comparison" value="Somewhat worse"> Somewhat worse</label>
+              <label class="choice"><input type="radio" name="current_process_comparison" value="Much worse"> Much worse</label>
+              <label class="choice"><input type="radio" name="current_process_comparison" value="Unable to judge"> Unable to judge</label>
+            </div>
+            <p class="field-error" id="err-current_process_comparison" hidden></p>
+          </fieldset>
+
+          <fieldset class="question" id="q-12" data-question="12" data-field="main_benefit">
+            <legend><span class="q-num">Q12</span> What is the main benefit Braivanta could provide to your organisation, if any?</legend>
+            <label class="visually-hidden" for="main_benefit">Question 12 answer</label>
+            <textarea id="main_benefit" name="main_benefit" class="form-textarea" rows="4" maxlength="2000" required aria-describedby="err-main_benefit"></textarea>
+            <p class="field-error" id="err-main_benefit" hidden></p>
+          </fieldset>
+
+          <fieldset class="question" id="q-13" data-question="13" data-field="main_barrier" aria-describedby="err-main_barrier">
+            <legend><span class="q-num">Q13</span> What is the main concern or barrier that could prevent your organisation from using Braivanta?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="main_barrier" value="Accuracy/reliability" required> Accuracy/reliability</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Data protection/security"> Data protection/security</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Staff training"> Staff training</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Integration with existing systems"> Integration with existing systems</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Cost/budget"> Cost/budget</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Procurement/approval"> Procurement/approval</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Need for more evidence/testing"> Need for more evidence/testing</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Current process is already adequate"> Current process is already adequate</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="No significant barrier"> No significant barrier</label>
+              <label class="choice"><input type="radio" name="main_barrier" value="Other"> Other</label>
+            </div>
+            <p class="field-error" id="err-main_barrier" hidden></p>
+            <div class="sub-question" id="field-main_barrier_other" data-show-when="main_barrier=Other" hidden>
+              <label for="main_barrier_other">If other, please specify (optional)</label>
+              <input type="text" id="main_barrier_other" name="main_barrier_other" class="form-input" maxlength="300" aria-describedby="err-main_barrier_other">
+              <p class="field-error" id="err-main_barrier_other" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="question" id="q-14" data-question="14" data-field="willingness_to_pay" aria-describedby="err-willingness_to_pay">
+            <legend><span class="q-num">Q14</span> If Braivanta demonstrated clear value, would your organisation consider paying for it?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="willingness_to_pay" value="Yes" required> Yes</label>
+              <label class="choice"><input type="radio" name="willingness_to_pay" value="Possibly"> Possibly</label>
+              <label class="choice"><input type="radio" name="willingness_to_pay" value="No"> No</label>
+              <label class="choice"><input type="radio" name="willingness_to_pay" value="Don't know"> Don't know</label>
+              <label class="choice"><input type="radio" name="willingness_to_pay" value="I am not involved in purchasing decisions"> I am not involved in purchasing decisions</label>
+            </div>
+            <p class="field-error" id="err-willingness_to_pay" hidden></p>
+            <fieldset class="sub-question" id="field-annual_budget_range" aria-describedby="err-annual_budget_range" data-show-when="willingness_to_pay=Yes|Possibly" hidden>
+              <legend>What annual budget range might realistically be considered?</legend>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="annual_budget_range" value="Under £1,000"> Under £1,000</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="£1,000–£2,999"> £1,000–£2,999</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="£3,000–£4,999"> £3,000–£4,999</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="£5,000–£9,999"> £5,000–£9,999</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="£10,000+"> £10,000+</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="Depends on scope/users"> Depends on scope/users</label>
+                <label class="choice"><input type="radio" name="annual_budget_range" value="Unable to estimate"> Unable to estimate</label>
+              </div>
+              <p class="field-error" id="err-annual_budget_range" hidden></p>
+            </fieldset>
+          </fieldset>
+
+          <fieldset class="question" id="q-15" data-question="15" data-field="next_step_position" aria-describedby="err-next_step_position">
+            <legend><span class="q-num">Q15</span> Which statement best describes your organisation's position after reviewing Braivanta?</legend>
+            <p class="question-hint">Choose the one strongest statement that applies.</p>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="next_step_position" value="No further interest at present" required> No further interest at present</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Interested in receiving more information"> Interested in receiving more information</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Willing to have a follow-up conversation"> Willing to have a follow-up conversation</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Would like to continue testing"> Would like to continue testing</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Would consider a controlled pilot"> Would consider a controlled pilot</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Would consider a paid pilot"> Would consider a paid pilot</label>
+              <label class="choice"><input type="radio" name="next_step_position" value="Would introduce Braivanta to the relevant decision-maker"> Would introduce Braivanta to the relevant decision-maker</label>
+            </div>
+            <p class="field-error" id="err-next_step_position" hidden></p>
+            <fieldset class="sub-question" id="field-followup_permission" aria-describedby="err-followup_permission">
+              <legend>May we contact you regarding this response?</legend>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="followup_permission" value="Yes" required> Yes</label>
+                <label class="choice"><input type="radio" name="followup_permission" value="No"> No</label>
+              </div>
+              <p class="field-error" id="err-followup_permission" hidden></p>
+            </fieldset>
+            <div class="sub-question" id="field-contact_name" data-show-when="followup_permission=Yes" hidden>
+              <label for="contact_name">Contact name</label>
+              <input type="text" autocomplete="name" id="contact_name" name="contact_name" class="form-input" maxlength="120" aria-describedby="err-contact_name">
+              <p class="field-error" id="err-contact_name" hidden></p>
+            </div>
+            <div class="sub-question" id="field-contact_email" data-show-when="followup_permission=Yes" hidden>
+              <label for="contact_email">Work email</label>
+              <input type="email" autocomplete="email" id="contact_email" name="contact_email" class="form-input" maxlength="254" aria-describedby="err-contact_email">
+              <p class="field-error" id="err-contact_email" hidden></p>
+            </div>
+          </fieldset>
+
+
+            <div class="data-notice" id="field-data_notice_acknowledged">
+              <p><strong>About your feedback.</strong> This research collects professional feedback for Braivanta product and market validation. Anonymised findings may be used in business-plan and market-validation evidence. Optional contact details are used only for follow-up, and only if you give permission. Please do not enter pupil-identifiable information. You can contact Braivanta about your submitted feedback at braivanta@gmail.com.</p>
+              <label class="choice"><input type="checkbox" id="data_notice_acknowledged" name="data_notice_acknowledged" aria-describedby="err-data_notice_acknowledged"> I have read this notice and agree to submit my feedback.</label>
+              <p class="field-error" id="err-data_notice_acknowledged" hidden></p>
+            </div>
+
+            <p class="field-error" id="err-submit" role="alert" hidden></p>
+            <div class="form-actions margin-top">
+              <button type="submit" id="submit-feedback" class="btn btn-primary btn-lg">Submit feedback</button>
+            </div>
+          </fieldset>
         </form>
+
+        <div id="submission-confirmation" class="confirmation" role="status" tabindex="-1" hidden>
+          <h3>Thank you. Your feedback has been recorded.</h3>
+          <p>You can close this page.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ==================== TAB 4: ANALYTICS DASHBOARD ==================== -->
-    <section id="dashboard-tab" class="tab-content">
-      
-      <!-- Live User Data Notice Banner (Visible when empty) -->
-      <div id="no-data-banner" class="card shadow-sm margin-bottom border-teal" style="display: none; background-color: #f0fdf4;">
-        <div class="card-body flex-between" style="padding: 1rem 1.5rem;">
-          <div>
-            <h4 style="margin: 0; color: #0f766e;">🟢 Live User Data Collection Active</h4>
-            <p class="subtext" style="margin: 0.25rem 0 0 0;">All sample demo figures have been removed. The dashboard is now awaiting real-time feedback submissions from visitors.</p>
-          </div>
-          <button class="btn btn-sm btn-teal" onclick="switchToFormTab()">📝 Submit Test Response</button>
-        </div>
-      </div>
-
-      <!-- Headline Metrics Cards Grid -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <span class="metric-label">Total Responses</span>
-          <span class="metric-value" id="m-total-resp">0</span>
-          <span class="metric-subtext">Captured user submissions</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Avg Problem Severity</span>
-          <span class="metric-value" id="m-avg-severity">0.0</span>
-          <span class="metric-subtext">Out of 5.0 scale</span>
-        </div>
-        <div class="metric-card card-highlight">
-          <span class="metric-label">Highest-Rated Feature</span>
-          <span class="metric-value text-teal" id="m-top-feature">-</span>
-          <span class="metric-subtext" id="m-top-feature-score">Score: -</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Lowest-Rated Feature</span>
-          <span class="metric-value" id="m-low-feature">-</span>
-          <span class="metric-subtext" id="m-low-feature-score">Score: -</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Interested in Pilot</span>
-          <span class="metric-value" id="m-pilot-interest-pct">0%</span>
-          <span class="metric-subtext">Controlled or paid pilot</span>
-        </div>
-        <div class="metric-card card-highlight">
-          <span class="metric-label">Consider £3,000 Paid Pilot</span>
-          <span class="metric-value text-teal" id="m-paid-pilot-pct">0%</span>
-          <span class="metric-subtext">Yes / Possibly (subject to approval)</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Top Price Preference</span>
-          <span class="metric-value" id="m-top-price">£300/mo</span>
-          <span class="metric-subtext">Most selected monthly tier</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Non-Binding EOIs</span>
-          <span class="metric-value" id="m-eoi-count">0</span>
-          <span class="metric-subtext">Expressions of interest</span>
-        </div>
-        <div class="metric-card card-hot">
-          <span class="metric-label">🔥 Hot Leads</span>
-          <span class="metric-value text-red" id="m-hot-leads">0</span>
-          <span class="metric-subtext">Lead score ≥ 8 pts</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Willing for Follow-up</span>
-          <span class="metric-value" id="m-followup-count">0</span>
-          <span class="metric-subtext">Ready for consultation</span>
-        </div>
-      </div>
-
-      <!-- Charts Grid -->
-      <div class="charts-grid margin-top">
-        <div class="chart-card card shadow-sm">
-          <h4>Feature Usefulness Ranking (1–5)</h4>
-          <canvas id="chart-feature-ranking"></canvas>
-        </div>
-
-        <div class="chart-card card shadow-sm">
-          <h4>Lead Temperature Breakdown</h4>
-          <canvas id="chart-lead-status"></canvas>
-        </div>
-
-        <div class="chart-card card shadow-sm">
-          <h4>Willingness to Consider £3,000 Paid Pilot</h4>
-          <canvas id="chart-pilot-willingness"></canvas>
-        </div>
-
-        <div class="chart-card card shadow-sm">
-          <h4>Monthly Subscription Price Preference</h4>
-          <canvas id="chart-price-preference"></canvas>
-        </div>
-
-        <div class="chart-card card shadow-sm">
-          <h4>Respondents by Role</h4>
-          <canvas id="chart-roles"></canvas>
-        </div>
-
-        <div class="chart-card card shadow-sm">
-          <h4>Problem Severity Distribution (1–5)</h4>
-          <canvas id="chart-severity"></canvas>
-        </div>
-      </div>
-
-      <!-- Customer Themes & Anonymized Quotes Section -->
-      <div class="card shadow-sm margin-top">
-        <div class="card-header border-bottom flex-between">
-          <div>
-            <h3>💬 Customer Themes & Open-Text Insights Matrix</h3>
-            <p class="subtext">Categorised comments with sentiment and follow-up priority.</p>
-          </div>
-          <div class="theme-filter-box">
-            <label for="theme-filter">Filter Theme Tag:</label>
-            <select id="theme-filter" class="form-select form-select-sm" onchange="renderThemeQuotes()">
-              <option value="ALL">All Themes</option>
-              <option value="Braille transcription need">Braille transcription need</option>
-              <option value="Human verification">Human verification</option>
-              <option value="STEM access">STEM access</option>
-              <option value="Data protection concern">Data protection concern</option>
-              <option value="Training/support need">Training/support need</option>
-              <option value="Budget concern">Budget concern</option>
-            </select>
-          </div>
-        </div>
-        <div class="card-body padding-none">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Role & Org Type</th>
-                  <th>Customer Quote / Feedback</th>
-                  <th>Theme Tag</th>
-                  <th>Sentiment</th>
-                  <th>Follow-up Priority</th>
-                </tr>
-              </thead>
-              <tbody id="quotes-table-body">
-                <!-- Dynamic quotes populated via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
+    <!-- ==================== TEAM-ONLY EVIDENCE VIEWS (server-authenticated) ==================== -->
+    <section id="dashboard-tab" class="tab-content" aria-labelledby="dashboard-heading">
+      <h2 id="dashboard-heading">Evidence dashboard</h2>
+      <p id="admin-status" class="subtext" role="status">Team login required.</p>
+      <div id="dashboard-content"></div>
     </section>
 
-
-
-    <!-- ==================== TAB 6: DATA & EVIDENCE EXPORT ==================== -->
-    <section id="export-tab" class="tab-content">
-      <div class="card shadow-sm">
-        <div class="card-header border-bottom flex-between">
-          <div>
-            <h2>Deliverable 6: Raw Data & Evidence Export Schema</h2>
-            <p class="subtext">View and export all live form responses captured from users.</p>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-secondary btn-sm" onclick="clearAllCapturedData()">🗑️ Clear Captured Data</button>
-            <button class="btn btn-primary btn-sm" onclick="exportDataToCSV()">📥 Download Data as CSV</button>
-          </div>
-        </div>
-        <div class="card-body padding-none">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Lead Score</th>
-                  <th>Status</th>
-                  <th>Name & Role</th>
-                  <th>Organisation</th>
-                  <th>Severity</th>
-                  <th>Features (F1-F5)</th>
-                  <th>Interest</th>
-                  <th>£3k Pilot</th>
-                  <th>Monthly Price</th>
-                  <th>EOI Status</th>
-                  <th>Follow-up</th>
-                </tr>
-              </thead>
-              <tbody id="raw-data-table-body">
-                <!-- Populated via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    <section id="export-tab" class="tab-content" aria-labelledby="export-heading">
+      <h2 id="export-heading">Data &amp; evidence export</h2>
+      <p class="subtext">Team login required.</p>
+      <div id="export-content"></div>
     </section>
 
   </main>
 
   <footer class="app-footer no-print">
-    <p>Braivanta Validation Engine | Designed for Human-Verified VI Education Workflows | Confidential</p>
-    <button class="btn-link" onclick="openPrivacyModal()">Data Protection & Privacy Policy</button>
+    <p>Braivanta validation research | Professional feedback only</p>
+    <button type="button" class="btn-link" data-open-modal="privacy-modal">Data notice</button>
   </footer>
 
-  <!-- ==================== DATA PROTECTION & PRIVACY MODAL ==================== -->
-  <div id="privacy-modal" class="modal-overlay">
+  <!-- ==================== DATA NOTICE ==================== -->
+  <div id="privacy-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacy-title" hidden>
     <div class="modal-card">
       <div class="modal-header flex-between">
-        <h3 class="text-teal">🛡️ Braivanta Data Protection, Security & Privacy Notice</h3>
-        <button class="modal-close" onclick="closePrivacyModal()">✕</button>
+        <h2 id="privacy-title" class="text-teal">Data notice</h2>
+        <button type="button" class="modal-close" data-close-modal aria-label="Close data notice">✕</button>
       </div>
       <div class="modal-body">
-        <div class="disclaimer-box margin-bottom">
-          <p><strong>Strict Principle:</strong> <em>"AI drafts. Humans verify."</em> Braivanta is built from the ground up to support Qualified Teachers of Visually Impaired (QTVIs), SENCOs, and education professionals while respecting UK data protection standards.</p>
-        </div>
-
-        <h4 class="margin-top">1. Demo Testing Data Safety Policy</h4>
-        <p>During demo testing, we explicitly request that <strong>no real pupil names, confidential school documents, live assessment materials, or personally identifiable information (PII)</strong> are uploaded. Demo testing is strictly for product feedback and feature validation.</p>
-
-        <h4 class="margin-top">2. How Professional Feedback Data is Used</h4>
-        <p>Information collected via the feedback form (job title, organisation, professional feedback, and contact email) is used <strong>exclusively to evaluate pilot suitability, refine features, and communicate with you about Braivanta updates</strong>. We do not sell data, share it with third parties, or use it for advertising.</p>
-
-        <h4 class="margin-top">3. Zero AI Training Guarantee</h4>
-        <p>Pupil work and descriptions processed by Braivanta are handled under strict zero-retention processing agreements. Customer data is <strong>never used to train base AI models</strong>.</p>
-
-        <h4 class="margin-top">4. UK GDPR & DfE Cloud Compliance (For IT / DPOs)</h4>
-        <p>The production Braivanta platform is designed in accordance with <strong>UK GDPR, the Data Protection Act 2018, and DfE Cloud Security Guidelines</strong>. Data is encrypted in transit (TLS 1.3) and at rest (AES-256) in UK-based data centers. Standard Data Protection Impact Assessments (DPIA) and Data Processing Agreements (DPA) are provided prior to school or local authority pilot onboarding.</p>
-
-        <div class="margin-top flex-between">
-          <span class="subtext">Contact DPO Lead: <strong>braivanta@gmail.com</strong></span>
-          <button class="btn btn-primary btn-sm" onclick="closePrivacyModal()">Close Notice</button>
+        <h3>Demo material only</h3>
+        <p>Please use demo or anonymised material only. Do not submit pupil names, confidential school records, live assessment material or any other pupil-identifiable information — in the demo or in this questionnaire.</p>
+        <h3 class="margin-top">What this questionnaire collects</h3>
+        <p>Professional feedback for Braivanta product and market validation. Anonymised findings may be used in business-plan and market-validation evidence.</p>
+        <h3 class="margin-top">Contact details</h3>
+        <p>Contact details are optional. They are collected only if you give follow-up permission, and are used only to follow up on your response.</p>
+        <h3 class="margin-top">Questions about your feedback</h3>
+        <p>You can contact Braivanta about the feedback you submitted at <strong>braivanta@gmail.com</strong>.</p>
+        <p class="subtext margin-top">This is a validation prototype. It is not the Braivanta product and is not presented as production infrastructure.</p>
+        <div class="margin-top modal-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-close-modal>Close</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== ADMIN AUTHENTICATION MODAL ==================== -->
-  <div id="admin-auth-modal" class="modal-overlay">
+  <!-- ==================== TEAM LOGIN (validated by the server) ==================== -->
+  <div id="admin-auth-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-auth-title" hidden>
     <div class="modal-card modal-sm">
       <div class="modal-header flex-between">
-        <h3 class="text-teal">🔒 Braivanta Team Login</h3>
-        <button class="modal-close" onclick="closeAdminAuthModal()">✕</button>
+        <h2 id="admin-auth-title" class="text-teal">Braivanta team login</h2>
+        <button type="button" class="modal-close" data-close-modal aria-label="Close team login">✕</button>
       </div>
-      <div class="modal-body">
-        <p>Please enter your internal Braivanta team passcode to unlock the Analytics Dashboard and CSV Evidence Export.</p>
-        
+      <form id="admin-auth-form" class="modal-body">
+        <p>Enter the team token to view the evidence dashboard and export. The token is checked by the server and kept only for this page session.</p>
         <div class="form-group margin-top">
-          <label for="admin-passcode-input">Team Passcode:</label>
-          <input type="password" id="admin-passcode-input" class="form-input" placeholder="Enter team passcode" onkeyup="handlePasscodeKeyUp(event)">
-          <span id="passcode-error" class="text-red subtext" style="display:none; margin-top:0.4rem;">Incorrect team passcode. Please try again.</span>
+          <label for="admin-token-input">Team token</label>
+          <input type="password" id="admin-token-input" class="form-input" autocomplete="off" aria-describedby="admin-token-error">
+          <p id="admin-token-error" class="field-error" role="alert" hidden></p>
         </div>
-
-        <div class="margin-top flex-between">
-          <span class="subtext">🔒 Restricted Access</span>
-          <button class="btn btn-primary" onclick="submitAdminPasscode()">Unlock Dashboard</button>
+        <div class="margin-top modal-actions">
+          <button type="submit" class="btn btn-primary">Unlock</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
