@@ -87,6 +87,31 @@ function enforceExclusive(event) {
 }
 
 // ---------------------------------------------------------------------------
+// Cross-field requirement (data-requires="field=Value", mirrored by server validation): Q7
+// "Not applicable" is available only while Q4 says the problem is not experienced. Only that
+// checkbox is ever cleared; other answers are untouched and nothing is selected automatically.
+function requirementMet(control) {
+  const [field, value] = control.dataset.requires.split("=");
+  return form.querySelector(`input[name="${CSS.escape(field)}"]:checked`)?.value === value;
+}
+
+function enforceRequirements(event) {
+  const target = event.target;
+  for (const control of form.querySelectorAll("input[data-requires]")) {
+    const [field] = control.dataset.requires.split("=");
+    if (target !== control && target.name !== field) continue;
+    const error = document.getElementById(`err-${control.name}`);
+    if (control.checked && !requirementMet(control)) {
+      control.checked = false;
+      showError(control.name, control.dataset.requiresMessage);
+    } else if (error && error.textContent === control.dataset.requiresMessage) {
+      error.hidden = true;
+      error.textContent = "";
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Conditional sub-questions (data-show-when="field=Value1|Value2"; multi-select: any selected)
 function applyConditions() {
   for (const block of form.querySelectorAll("[data-show-when]")) {
@@ -159,6 +184,9 @@ function continueToDemo() {
   clearErrors();
   const values = readValues(preGroup);
   const errors = missingRequired(values, PRE_REQUIRED);
+  for (const control of preGroup.querySelectorAll("input[data-requires]:checked")) {
+    if (!requirementMet(control)) errors[control.name] = control.dataset.requiresMessage;
+  }
   if (Object.keys(errors).length) {
     for (const [field, message] of Object.entries(errors)) showError(field, message);
     showError("pre-demo", "Please answer Questions 1–7 before continuing to the demo.");
@@ -304,6 +332,7 @@ function start() {
   initNavigation();
   admin = initAdmin({ showTab, closeLogin: () => closeModal(document.getElementById("admin-auth-modal")) });
   form.addEventListener("change", (event) => {
+    enforceRequirements(event);
     enforceExclusive(event);
     applyConditions();
   });

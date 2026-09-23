@@ -240,9 +240,9 @@
               <label class="choice"><input type="checkbox" name="current_approaches" value="Email/spreadsheets/documents"> Email/spreadsheets/documents</label>
               <label class="choice"><input type="checkbox" name="current_approaches" value="No consistent process"> No consistent process</label>
               <label class="choice"><input type="checkbox" name="current_approaches" value="Other"> Other</label>
-              <label class="choice"><input type="checkbox" name="current_approaches" value="Not applicable / no current problem to manage" data-exclusive> Not applicable / no current problem to manage</label>
+              <label class="choice"><input type="checkbox" name="current_approaches" value="Not applicable / no current problem to manage" data-exclusive data-requires="problem_frequency=We do not experience this problem" data-requires-message="Not applicable can only be selected when you have indicated that your organisation does not experience this problem."> Not applicable / no current problem to manage</label>
             </div>
-            <p class="field-error" id="err-current_approaches" hidden></p>
+            <p class="field-error" id="err-current_approaches" aria-live="polite" hidden></p>
             <div class="sub-question" id="field-current_approaches_other" data-show-when="current_approaches=Other" hidden>
               <label for="current_approaches_other">Please specify the other approach (optional)</label>
               <input type="text" id="current_approaches_other" name="current_approaches_other" class="form-input" maxlength="300" aria-describedby="err-current_approaches_other">

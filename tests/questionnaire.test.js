@@ -168,7 +168,7 @@ test("F/I: exclusive answers are marked on the page exactly as defined, enforced
   const handler = app.slice(app.indexOf("function enforceExclusive"), app.indexOf("// Conditional sub-questions"));
   assert.match(handler, /if \(input\.type !== "checkbox" \|\| !input\.checked \|\| !MULTI_FIELDS\.has\(input\.name\)\) return;/);
   assert.match(handler, /if \(other !== input && \(input\.hasAttribute\("data-exclusive"\) \|\| other\.hasAttribute\("data-exclusive"\)\)\) other\.checked = false;/);
-  assert.match(app, /form\.addEventListener\("change", \(event\) => \{\n\s+enforceExclusive\(event\);\n\s+applyConditions\(\);/);
+  assert.match(app, /form\.addEventListener\("change", \(event\) => \{\n\s+enforceRequirements\(event\);\n\s+enforceExclusive\(event\);\n\s+applyConditions\(\);/);
   assert.match(app, /const MULTI_FIELDS = new Set\(\["problem_impacts", "current_approaches", "tested_features"\]\);/);
 });
 
@@ -184,4 +184,23 @@ test("G/H: Q5 and Q7 'Other' details sit inside their question and appear only w
   // Conditions read every selected checkbox, so a multi-select "Other" reveals the detail.
   assert.ok(app.includes('const current = [...form.querySelectorAll(`input[name="${CSS.escape(field)}"]:checked`)].map((c) => c.value);'));
   assert.ok(app.includes('const show = list.split("|").some((value) => current.includes(value));'));
+});
+
+// ── Q4/Q7 cross-field coherence (PR #1 final correction) ───────────────────────
+test("E/F/I: the browser clears Q7 'Not applicable' unless Q4 says 'no problem', and never selects it automatically", () => {
+  assert.equal([...html.matchAll(/data-question="/g)].length, 15);
+  const requires = [...html.matchAll(/<input type="checkbox" name="([a-z_]+)" value="([^"]*)"[^>]*data-requires="([^"]*)" data-requires-message="([^"]*)">/g)];
+  assert.equal(requires.length, 1, "exactly one cross-field rule");
+  assert.deepEqual([requires[0][1], requires[0][2], requires[0][3]], ["current_approaches", "Not applicable / no current problem to manage", "problem_frequency=We do not experience this problem"]);
+  assert.equal(requires[0][4], "Not applicable can only be selected when you have indicated that your organisation does not experience this problem.");
+  assert.match(html, /<p class="field-error" id="err-current_approaches" aria-live="polite" hidden><\/p>/, "accessible message");
+
+  const handler = app.slice(app.indexOf("function requirementMet"), app.indexOf("// Conditional sub-questions"));
+  // Runs for the Q7 checkbox itself (F) and for any change to the Q4 answer (E).
+  assert.ok(handler.includes("if (target !== control && target.name !== field) continue;"));
+  assert.ok(handler.includes("if (control.checked && !requirementMet(control)) {\n      control.checked = false;\n      showError(control.name, control.dataset.requiresMessage);"));
+  assert.doesNotMatch(handler, /\.checked = true/, "never selects anything on the participant's behalf");
+  assert.ok(app.includes("form.addEventListener(\"change\", (event) => {\n    enforceRequirements(event);\n    enforceExclusive(event);\n    applyConditions();"));
+  // Continue-to-demo mirrors the rule too.
+  assert.ok(app.includes('for (const control of preGroup.querySelectorAll("input[data-requires]:checked")) {'));
 });

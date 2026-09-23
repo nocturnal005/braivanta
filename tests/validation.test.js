@@ -1,7 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { QUESTIONS, PRE_DEMO, POST_DEMO, allFields } from "../lib/questionnaire.js";
+import {
+  NOT_APPLICABLE_APPROACH,
+  NOT_APPLICABLE_REQUIRES_NO_PROBLEM_MESSAGE,
+  NO_PROBLEM_FREQUENCY,
+  POST_DEMO,
+  PRE_DEMO,
+  QUESTIONS,
+  allFields,
+} from "../lib/questionnaire.js";
 import { validateSubmission } from "../lib/validation.js";
 import { negativeSubmission, validSubmission } from "./fixtures.js";
 
@@ -116,7 +124,9 @@ test("C/D/E: exclusive answers cannot be combined with any other answer (server-
     assert.equal(result.errors[field], "“" + exclusive + "” cannot be combined with other answers.");
     // Order does not matter, and the exclusive answer on its own is valid.
     assert.equal(validateSubmission(validSubmission({ [field]: [...value].reverse() })).ok, false, field + " reversed");
-    assert.equal(validateSubmission(validSubmission({ [field]: [exclusive] })).ok, true, field + " alone");
+    // Q7 "Not applicable" on its own is valid only alongside Q4 "no problem" (cross-field rule).
+    const coherent = field === "current_approaches" ? { problem_frequency: "We do not experience this problem" } : {};
+    assert.equal(validateSubmission(validSubmission({ [field]: [exclusive], ...coherent })).ok, true, field + " alone");
   }
   assert.deepEqual(
     QUESTIONS.filter((q) => q.exclusive).map((q) => [q.number, q.exclusive]),
@@ -145,4 +155,36 @@ test("G/H: Q5 and Q7 'Other' details are optional, limited to 300 characters, an
     assert.equal(validateSubmission(validSubmission({ [field]: other, [detail]: "x".repeat(301) })).ok, false, "300-character limit");
     assert.equal(allFields().find((f) => f.field === detail).maxLength, 300);
   }
+});
+
+// ── Q4/Q7 cross-field coherence (PR #1 final correction) ───────────────────────
+test("A/G: Q7 'Not applicable' is valid with Q4 'no problem'; the full negative fixture stays valid", () => {
+  const result = validateSubmission(validSubmission({ problem_frequency: NO_PROBLEM_FREQUENCY, current_approaches: [NOT_APPLICABLE_APPROACH] }));
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
+  const negative = validateSubmission(negativeSubmission());
+  assert.equal(negative.ok, true, JSON.stringify(negative.errors));
+  assert.deepEqual(negative.value.current_approaches, [NOT_APPLICABLE_APPROACH]);
+});
+
+test("B/C: Q7 'Not applicable' with a real Q4 frequency is rejected on Q7, never rewritten", () => {
+  assert.equal(
+    NOT_APPLICABLE_REQUIRES_NO_PROBLEM_MESSAGE,
+    "Not applicable can only be selected when you have indicated that your organisation does not experience this problem.",
+  );
+  for (const frequency of ["Daily", "Weekly", "Several times a week", "Several times a month", "Monthly", "Rarely"]) {
+    const result = validateSubmission(validSubmission({ problem_frequency: frequency, current_approaches: [NOT_APPLICABLE_APPROACH] }));
+    assert.equal(result.ok, false, frequency);
+    assert.deepEqual(result.errors, { current_approaches: NOT_APPLICABLE_REQUIRES_NO_PROBLEM_MESSAGE }, frequency);
+    assert.equal(result.value, undefined, "no substituted or rewritten record is produced");
+  }
+});
+
+test("D + inverse not forced: ordinary Q7 answers are valid with any Q4 answer, including 'no problem'", () => {
+  for (const frequency of QUESTIONS.find((q) => q.field === "problem_frequency").options) {
+    const result = validateSubmission(validSubmission({ problem_frequency: frequency, current_approaches: ["QTVI/manual specialist process"] }));
+    assert.equal(result.ok, true, frequency + ": " + JSON.stringify(result.errors));
+  }
+  // Exclusivity is still checked first and keeps its own message.
+  const mixed = validateSubmission(validSubmission({ problem_frequency: NO_PROBLEM_FREQUENCY, current_approaches: [NOT_APPLICABLE_APPROACH, "Other"] }));
+  assert.equal(mixed.errors.current_approaches, "“" + NOT_APPLICABLE_APPROACH + "” cannot be combined with other answers.");
 });
